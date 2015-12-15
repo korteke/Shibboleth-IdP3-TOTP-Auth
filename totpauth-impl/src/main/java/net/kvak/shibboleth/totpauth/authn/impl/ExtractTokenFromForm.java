@@ -27,7 +27,7 @@ public class ExtractTokenFromForm extends AbstractExtractionAction {
 
 	/** Class logger. */
 	@Nonnull
-	private final Logger log = LoggerFactory.getLogger(ExtractTokenFromForm.class;
+	private final Logger log = LoggerFactory.getLogger(ExtractTokenFromForm.class);
 
 	@Nonnull
 	@NotEmpty
