@@ -6,7 +6,7 @@ Google authenticator authentication module for Shibboleth IdP v3.
 Requirements
 ------------
 
-Shibboleth IdP v3.2.0
+Shibboleth IdP v3.2.0  
 Java 7
 
 Installing
@@ -27,24 +27,25 @@ Directory structure:
 └── views
 </pre>
 
-Copy conf --> $IDP_HOME/conf  
-Copy edit-webapp  --> $IDP_HOME/edit-webapp  
-Copy flows  --> $IDP_HOME/flows  
-Copy views  --> $IDP_HOME/views  
+Copy conf --> $IDP-HOME/conf  
+Copy edit-webapp  --> $IDP-HOME/edit-webapp  
+Copy flows  --> $IDP-HOME/flows  
+Copy views  --> $IDP-HOME/views  
 
 Modify $IDP_HOME/conf/idp.properties  
 
 idp.authn.flows = Password --> idp.authn.flows = Totp
 
-Add TOTP bean to $IDP_HOME/conf/authn/general-authn.xml, element "<util:list id="shibboleth.AvailableAuthenticationFlows">":
-
-<pre>
+Add TOTP bean to $IDP_HOME/conf/authn/general-authn.xml, element
 ```
-<bean id="authn/Totp" parent="shibboleth.AuthenticationFlow"
-    p:passiveAuthenticationSupported="false"
-    p:forcedAuthenticationSupported="true" />
+ "<util:list id="shibboleth.AvailableAuthenticationFlows">"
 ```
-</pre>
+  
+```
+<bean id="authn/Totp" parent="shibboleth.AuthenticationFlow"  
+    p:passiveAuthenticationSupported="false"  
+    p:forcedAuthenticationSupported="true" />  
+```
 
 Seed Fetching
 -------------
