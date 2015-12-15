@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+
+       default-init-method="initialize"
+       default-destroy-method="destroy">
+
+    <!-- Names of form fields to pull tokenNumber -->
+    <bean id="shibboleth.authn.tokenCodeField" class="java.lang.String" c:_0="j_tokenNumber" />
+
+    <!-- SeedFetcher class to be injected to the TOTP validator (ldap, sql, mongo, rest, dummy) -->
+    <bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.DummySeedFetcher"/>
+
+    <!-- GoogleAuthenticator class to be injected to the TOTP validator. Default settings (offset 3 codes and so on) -->
+    <bean id="shibboleth.totp.gAuth" class="com.warrenstrange.googleauth.GoogleAuthenticator"/>
+
+</beans>

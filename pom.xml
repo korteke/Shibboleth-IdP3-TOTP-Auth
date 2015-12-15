@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>net.shibboleth.idp</groupId>
+		<artifactId>idp-parent</artifactId>
+		<version>3.2.0</version>
+	</parent>
+	<groupId>net.kvak.shibboleth</groupId>
+	<artifactId>totpauth-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Shibboleth IdP v3 TOTP auth parent</name>
+	<description>TOTP based authentication module for Shibboleth IdP v3</description>
+
+	<modules>
+		<module>totpauth-api</module>
+		<module>totpauth-impl</module>
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.version>3.2</maven.compiler.version>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<shib.idp.version>3.2.0</shib.idp.version>
+		<gson.version>2.3.1</gson.version>
+		<mobile.auth.version>0.0.1-SNAPSHOT</mobile.auth.version>
+		<com.warrenstrange.version>0.5.0</com.warrenstrange.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>shib-release</id>
+			<url>https://build.shibboleth.net/nexus/content/groups/public</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>shib-snapshot</id>
+			<url>https://build.shibboleth.net/nexus/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Compile Dependencies -->
+			<dependency>
+				<groupId>net.kvak.shibboleth</groupId>
+				<artifactId>totpauth-api</artifactId>
+				<version>${mobile.auth.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-attribute-api</artifactId>
+				<version>${shib.idp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-authn-api</artifactId>
+				<version>${shib.idp.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-attribute-resolver-api</artifactId>
+				<version>${shib.idp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-attribute-resolver-spring</artifactId>
+				<version>${shib.idp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-session-api</artifactId>
+				<version>${shib.idp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-profile-api</artifactId>
+				<version>${shib.idp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${opensaml.groupId}</groupId>
+				<artifactId>opensaml-core</artifactId>
+				<version>${opensaml.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${opensaml.groupId}</groupId>
+				<artifactId>opensaml-profile-api</artifactId>
+				<version>${opensaml.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${opensaml.groupId}</groupId>
+				<artifactId>opensaml-soap-api</artifactId>
+				<version>${opensaml.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>${gson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.warrenstrange</groupId>
+				<artifactId>googleauth</artifactId>
+				<version>${com.warrenstrange.version}</version>
+			</dependency>
+
+			<!-- Provided Dependencies -->
+
+			<!-- Runtime Dependencies -->
+
+			<!-- Test Dependencies -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>3.8.1</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-attribute-resolver-impl</artifactId>
+				<version>${shib.idp.version}</version>
+				<type>test-jar</type>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-attribute-resolver-spring</artifactId>
+				<version>${shib.idp.version}</version>
+				<type>test-jar</type>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-saml-impl</artifactId>
+				<version>${shib.idp.version}</version>
+				<type>test-jar</type>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-core</artifactId>
+				<version>${shib.idp.version}</version>
+				<type>test-jar</type>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>${opensaml.groupId}</groupId>
+				<artifactId>opensaml-core</artifactId>
+				<version>${opensaml.version}</version>
+				<type>test-jar</type>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>${opensaml.groupId}</groupId>
+				<artifactId>opensaml-profile-api</artifactId>
+				<version>${opensaml.version}</version>
+				<scope>test</scope>
+				<type>test-jar</type>
+			</dependency>
+
+			<dependency>
+				<groupId>${opensaml.groupId}</groupId>
+				<artifactId>opensaml-security-impl</artifactId>
+				<version>${opensaml.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-profile-api</artifactId>
+				<version>${shib.idp.version}</version>
+				<scope>test</scope>
+				<type>test-jar</type>
+			</dependency>
+
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-authn-api</artifactId>
+				<version>${shib.idp.version}</version>
+				<scope>test</scope>
+				<type>test-jar</type>
+			</dependency>
+
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-authn-impl</artifactId>
+				<version>${shib.idp.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>net.shibboleth.idp</groupId>
+				<artifactId>idp-authn-impl</artifactId>
+				<version>${shib.idp.version}</version>
+				<scope>test</scope>
+				<type>test-jar</type>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+</project>
