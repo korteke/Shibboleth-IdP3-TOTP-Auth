@@ -1,7 +1,8 @@
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/korteke/Shibboleth-IdP3-TOTP-Auth/blob/master/LICENSE)
 
 # Shibboleth-IdP3-TOTP-Auth
-Google authenticator authentication module for Shibboleth IdP v3.
+Google authenticator authentication module for Shibboleth IdP v3.  
+Work in progress. This is the first "working" implementation. Using just static authenticator seed from DummySeedFetcher class.
 
 Requirements
 ------------
@@ -34,7 +35,7 @@ Copy views  --> $IDP-HOME/views
 
 Modify $IDP_HOME/conf/idp.properties  
 
-idp.authn.flows = Password --> idp.authn.flows = Totp
+idp.authn.flows = Password --> idp.authn.flows = Password|Totp
 
 Add TOTP bean to $IDP_HOME/conf/authn/general-authn.xml, element
 ```
@@ -42,9 +43,16 @@ Add TOTP bean to $IDP_HOME/conf/authn/general-authn.xml, element
 ```
   
 ```
-<bean id="authn/Totp" parent="shibboleth.AuthenticationFlow"  
-    p:passiveAuthenticationSupported="false"  
-    p:forcedAuthenticationSupported="true" />  
+        <bean id="authn/Totp" parent="shibboleth.AuthenticationFlow"
+                p:passiveAuthenticationSupported="true"
+                p:forcedAuthenticationSupported="true">
+            <property name="supportedPrincipals">
+                <util:list>
+                    <bean parent="shibboleth.SAML2AuthnContextClassRef"
+                        c:classRef="urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken" />
+                </util:list>
+            </property>
+        </bean>
 ```
 
 Seed Fetching
@@ -57,4 +65,17 @@ Adding new seed to user
 ----------------------
 
 TBD.  
-Own registration flow / External process.  
+Own registration flow / External process.
+
+
+Requesting new Authentication Context Class with Shibboleth SP
+-----------------------------------------------
+
+(for testing purpose)
+Add new Session Initiator
+
+```
+<SessionInitiator type="Chaining" Location="/totp" id="totp" entityID="https://IDP-ENTITY-ID">  
+  <SessionInitiator type="SAML2" acsIndex="1" template="bindingTemplate.html" authnContextClassRef="urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken"/>  
+</SessionInitiator>  
+```
