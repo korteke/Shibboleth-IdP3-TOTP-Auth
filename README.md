@@ -1,4 +1,4 @@
-[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/korteke/Shibboleth-IdP3-TOTP-Auth/blob/master/LICENSE)
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/korteke/Shibboleth-IdP3-TOTP-Auth/blob/master/LICENSE)
 
 # Shibboleth-IdP3-TOTP-Auth
 Google authenticator authentication module for Shibboleth IdP v3.
