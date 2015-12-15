@@ -83,12 +83,13 @@ public class TotpTokenValidator extends AbstractValidationAction implements Toke
 
 			if (!result) {
 				log.debug("{} Token authentication failed for user: {}", getLogPrefix(), upCtx.getUsername());
-			    ActionSupport.buildEvent(profileRequestContext, AuthnEventIds.INVALID_CREDENTIALS);
+				handleError(profileRequestContext, authenticationContext, "InvalidCredentials", AuthnEventIds.INVALID_CREDENTIALS);
 			    return;
-			}
+			} else {
 			
 			log.debug("{} Token authentication success for user: {}", getLogPrefix(), upCtx.getUsername());
 			buildAuthenticationResult(profileRequestContext, authenticationContext);
+			}
 			
 		} catch (Exception e) {
             log.warn("{} Login by {} produced exception", getLogPrefix(), upCtx.getUsername(), e);
