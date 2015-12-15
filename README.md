@@ -50,4 +50,11 @@ Add TOTP bean to $IDP_HOME/conf/authn/general-authn.xml, element
 Seed Fetching
 -------------
 
-TBD
+TBD.  
+From LDAP, MongoDB, SQL, File, REST, Dummy(static)
+
+Adding new seed to user
+----------------------
+
+TBD.  
+Own registration flow / External process.  
