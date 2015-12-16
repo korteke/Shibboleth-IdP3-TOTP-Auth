@@ -1,6 +1,7 @@
 package net.kvak.shibboleth.totpauth.authn.impl.seed;
 
 import net.kvak.shibboleth.totpauth.api.authn.SeedFetcher;
+import net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext;
 
 public class DummySeedFetcher implements SeedFetcher {
 
@@ -9,12 +10,8 @@ public class DummySeedFetcher implements SeedFetcher {
 	}
 
 	@Override
-	public String getSeed(String username) {
+	public void getSeed(String username, TokenUserContext tokenUserCtx) {
 		// Dummy seed for testing
-		if (username != null) {
-		return "G24YUKCHHXRDWCPR";
-		}
-		return "";
+		tokenUserCtx.setTokenSeed("G24YUKCHHXRDWCPR");
 	}
-
 }

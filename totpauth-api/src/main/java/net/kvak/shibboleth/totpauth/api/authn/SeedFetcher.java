@@ -1,7 +1,9 @@
 package net.kvak.shibboleth.totpauth.api.authn;
 
+import net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext;
+
 public interface SeedFetcher {
 	
-	public String getSeed(String username);
+	public void getSeed(String username, TokenUserContext tokenUserCtx);
 
 }

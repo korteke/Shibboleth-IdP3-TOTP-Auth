@@ -1,5 +1,8 @@
 package net.kvak.shibboleth.totpauth.authn.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.annotation.Nonnull;
 import javax.security.auth.Subject;
 
@@ -12,20 +15,21 @@ import com.warrenstrange.googleauth.GoogleAuthenticator;
 import net.kvak.shibboleth.totpauth.api.authn.SeedFetcher;
 import net.kvak.shibboleth.totpauth.api.authn.TokenValidator;
 import net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext;
+import net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext.AuthState;
 import net.shibboleth.idp.authn.AbstractValidationAction;
 import net.shibboleth.idp.authn.AuthnEventIds;
 import net.shibboleth.idp.authn.context.AuthenticationContext;
 import net.shibboleth.idp.authn.context.UsernamePasswordContext;
 import net.shibboleth.idp.authn.principal.UsernamePrincipal;
-import net.shibboleth.idp.profile.ActionSupport;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
- * Validates users TOTP token code against injected authenticator 
+ * Validates users TOTP token code against injected authenticator
  * 
  * An action that checks for a {@link TokenCodeContext} and directly produces an
- * {@link net.shibboleth.idp.authn.AuthenticationResult} based on submitted tokencode and username
+ * {@link net.shibboleth.idp.authn.AuthenticationResult} based on submitted
+ * tokencode and username
  * 
  * @author korteke
  *
@@ -53,6 +57,8 @@ public class TotpTokenValidator extends AbstractValidationAction implements Toke
 	@NotEmpty
 	private SeedFetcher seedFetcher;
 
+	private boolean result = false;
+
 	/** Inject seedfetcher **/
 	public void setseedFetcher(@Nonnull @NotEmpty final SeedFetcher seedFetcher) {
 		this.seedFetcher = seedFetcher;
@@ -75,24 +81,50 @@ public class TotpTokenValidator extends AbstractValidationAction implements Toke
 		log.debug("{} Entering totpvalidator", getLogPrefix());
 
 		try {
-			
-			final TokenUserContext tokenCtx = authenticationContext.getSubcontext(TokenUserContext.class, true);
+
+			TokenUserContext tokenCtx = authenticationContext.getSubcontext(TokenUserContext.class, true);
 			upCtx = authenticationContext.getSubcontext(UsernamePasswordContext.class, true);
+
+			/* Add seeds from repository to tokenUserContext */
+			seedFetcher.getSeed(upCtx.getUsername(), tokenCtx);
+
+			if (tokenCtx.getState() == AuthState.OK) {
+				log.debug("{} Validating user token against seed", getLogPrefix());
+				
+				/* Get seeds from tokenUserContext */
+				ArrayList<String> seeds = tokenCtx.getTokenSeed();
+
+				/* Iterate over seeds and try to validate them */
+				Iterator<String> it = seeds.iterator();
+				while (it.hasNext()) {
+					result = validateToken(it.next(), tokenCtx.getTokenCode());
+					if (result) {
+						log.debug("{} Token authentication success for user: {}", getLogPrefix(), upCtx.getUsername());
+						tokenCtx.setState(AuthState.OK);
+						buildAuthenticationResult(profileRequestContext, authenticationContext);
+						return;
+					}
+				}
+			}
 			
-			boolean result = validateToken(seedFetcher.getSeed(upCtx.getUsername()),tokenCtx.getTokenCode());
+			if (tokenCtx.getState() == AuthState.REGISTER) {
+				log.debug("{} User: {} has not registered token", getLogPrefix(), upCtx.getUsername());
+				handleError(profileRequestContext, authenticationContext, "RegisterToken",
+						AuthnEventIds.ACCOUNT_ERROR);
+				return;
+			}
 
 			if (!result) {
 				log.debug("{} Token authentication failed for user: {}", getLogPrefix(), upCtx.getUsername());
-				handleError(profileRequestContext, authenticationContext, "InvalidCredentials", AuthnEventIds.INVALID_CREDENTIALS);
-			    return;
-			} else {
-			
-			log.debug("{} Token authentication success for user: {}", getLogPrefix(), upCtx.getUsername());
-			buildAuthenticationResult(profileRequestContext, authenticationContext);
+				handleError(profileRequestContext, authenticationContext, "InvalidCredentials",
+						AuthnEventIds.INVALID_CREDENTIALS);
+				return;
 			}
-			
+
 		} catch (Exception e) {
-            log.warn("{} Login by {} produced exception", getLogPrefix(), upCtx.getUsername(), e);
+			log.warn("{} Login by {} produced exception", getLogPrefix(), upCtx.getUsername(), e);
+			handleError(profileRequestContext, authenticationContext, "InvalidCredentials",
+					AuthnEventIds.INVALID_CREDENTIALS);
 		}
 
 	}

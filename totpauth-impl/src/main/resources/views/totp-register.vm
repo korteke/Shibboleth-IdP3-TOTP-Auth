@@ -1,0 +1,44 @@
+#set ($rpContext = $profileRequestContext.getSubcontext('net.shibboleth.idp.profile.context.RelyingPartyContext'))
+#set ($userName = $authenticationContext.getSubcontext('net.shibboleth.idp.authn.context.UsernamePasswordContext', true).getUsername())
+##
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>#springMessageText("idp.title", "Web Login Service")</title>
+  <link rel="stylesheet" type="text/css" href="$request.getContextPath()/css/main.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <header>
+        <img src="$request.getContextPath()#springMessage("idp.logo")" alt="#springMessageText("idp.logo.alt-text", "logo")">
+      </header>
+
+      <div class="content">
+        <div class="column one">
+          #parse("login-error.vm")
+
+          <form action="$flowExecutionUrl" method="post">
+
+            <div class="form-element-wrapper">
+              <label for="tokenNumber">First Token code</label>
+              <input class="form-element form-field" id="j_tokenNumber1" name="j_tokenNumber1" type="text">
+            </div>
+
+            <div class="form-element-wrapper">
+              <label for="tokenNumber">Second Token code</label>
+              <input class="form-element form-field" id="j_tokenNumber2" name="j_tokenNumber2" type="text">
+            </div>
+
+            <div class="form-element-wrapper">
+              <button class="form-element form-button" type="submit" name="_eventId_proceed"
+              onClick="this.childNodes[0].nodeValue='#springMessageText("idp.login.pleasewait", "Logging in, please wait...")'"
+              >#springMessageText("idp.login.login", "Login")</button>
+            </div>
+          </form>
+
+        </div>
+
+      </body>
+</html>

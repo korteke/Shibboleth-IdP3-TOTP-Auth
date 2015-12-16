@@ -1,6 +1,7 @@
 package net.kvak.shibboleth.totpauth.authn.impl.seed;
 
 import net.kvak.shibboleth.totpauth.api.authn.SeedFetcher;
+import net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext;
 
 public class SQLSeedFetcher implements SeedFetcher {
 
@@ -9,9 +10,8 @@ public class SQLSeedFetcher implements SeedFetcher {
 	}
 
 	@Override
-	public String getSeed(String username) {
+	public void getSeed(String username, TokenUserContext tokenUserCtx) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -25,6 +25,25 @@
 
 	</view-state>
 
+	<view-state id="RegisterToken" view="totp-register">
+		<on-render>
+			<evaluate expression="environment" result="viewScope.environment" />
+			<evaluate expression="opensamlProfileRequestContext" result="viewScope.profileRequestContext" />
+			<evaluate expression="opensamlProfileRequestContext.getSubcontext(T(net.shibboleth.idp.authn.context.AuthenticationContext))"
+				result="viewScope.authenticationContext" />
+			<evaluate expression="T(net.shibboleth.utilities.java.support.codec.HTMLEncoder)" result="viewScope.encoder" />
+			<evaluate expression="flowRequestContext.getExternalContext().getNativeRequest()" result="viewScope.request" />
+			<evaluate expression="flowRequestContext.getExternalContext().getNativeResponse()" result="viewScope.response" />
+			<evaluate
+				expression="flowRequestContext.getActiveFlow().getApplicationContext().containsBean('shibboleth.CustomViewContext') ? flowRequestContext.getActiveFlow().getApplicationContext().getBean('shibboleth.CustomViewContext') : null"
+				result="viewScope.custom" />
+		</on-render>
+		
+		<transition on="AccountError" to="RegisterToken" />
+		<transition on="proceed" to="DisplayTotpForm" />
+
+	</view-state>
+
 	<action-state id="ExtractTotpFromForm">
 		<evaluate expression="ExtractTotpFromForm" />
 		<evaluate expression="'proceed'" />
@@ -39,6 +58,8 @@
 
 		<transition on="InvalidCredentials" to="DisplayTotpForm" />
 		<transition on="NoCredentials" to="DisplayTotpForm" />
+		<transition on="AccountError" to="RegisterToken" />
+
 		<transition on="proceed" to="proceed" />
 	</action-state>
 
