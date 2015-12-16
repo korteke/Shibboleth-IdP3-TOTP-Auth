@@ -39,11 +39,11 @@ Modify $IDP_HOME/conf/idp.properties
 
 idp.authn.flows = Password --> idp.authn.flows = Password|Totp
 
-Add TOTP bean to $IDP_HOME/conf/authn/general-authn.xml, element
+Add TOTP bean to $IDP_HOME/conf/authn/general-authn.xml, to the element:
 ```
  "<util:list id="shibboleth.AvailableAuthenticationFlows">"
 ```
-  
+  New Bean
 ```
         <bean id="authn/Totp" parent="shibboleth.AuthenticationFlow"
                 p:passiveAuthenticationSupported="true"
