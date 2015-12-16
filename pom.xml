@@ -126,6 +126,14 @@
 				<version>${org.springframework.ldap.version}</version>
 			</dependency>
 
+
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-mongodb</artifactId>
+				<version>1.8.1.RELEASE</version>
+			</dependency>
+
+
 			<!-- Provided Dependencies -->
 
 			<!-- Runtime Dependencies -->

@@ -33,10 +33,22 @@
 		<constructor-arg ref="contextSource" />
 	</bean>
 
+	<!-- For LDAP -->
 	<bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.LdapSeedFetcher">
 		<constructor-arg ref="shibboleth.authn.seedAttribute" />
 		<constructor-arg ref="shibboleth.authn.userAttribute" />
 		<property name="ldapTemplate" ref="ldapTemplate" />
+	</bean>
+
+	<!-- For MongoDB -->
+	<!--bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.MongoSeedFetcher"/-->
+	
+	<!-- For Dummy -->
+	<!--bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.DummySeedFetcher"/-->
+	
+	<bean id="shibboleth.totp.mongoConfig" class="net.kvak.shibboleth.totpauth.authn.impl.seed.MongoDB.SpringMongoConfiguration">
+		<constructor-arg ref="shibboleth.authn.mongoDbName" />
+		<constructor-arg ref="shibboleth.authn.mongoDbUrl" />
 	</bean>
 
 </beans>

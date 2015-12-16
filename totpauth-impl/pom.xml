@@ -76,6 +76,10 @@
 			<groupId>org.springframework.ldap</groupId>
 			<artifactId>spring-ldap-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+		</dependency>
 
 		<!-- Provided Dependencies -->
 
@@ -176,7 +180,7 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<includeGroupIds>net.kvak.shibboleth,org.apache.commons,com.warrenstrange,com.google.code.gson,org.springframework.ldap</includeGroupIds>
+							<includeGroupIds>net.kvak.shibboleth,org.apache.commons,com.warrenstrange,com.google.code.gson,org.springframework.ldap,org.springframework.data,com.mongodb,org.mongodb</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>
