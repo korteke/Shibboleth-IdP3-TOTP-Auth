@@ -2,12 +2,14 @@
 
 # Shibboleth-IdP3-TOTP-Auth
 Google authenticator authentication module for Shibboleth IdP v3.  
-Work in progress. This is the first "working" implementation. Using just static authenticator seed from DummySeedFetcher class.
+Work in progress. This is the first "working" implementation. 
+
+Uses External LDAP, MongoDB(EXPERIMENTAL!) or Static for seed fetching
 
 Requirements
 ------------
 
-Shibboleth IdP v3.2.0  
+Shibboleth IdP v3.2.x  
 Java 7
 
 Installing
@@ -28,10 +30,10 @@ Directory structure:
 └── views
 </pre>
 
-Copy conf --> $IDP-HOME/conf  
-Copy edit-webapp  --> $IDP-HOME/edit-webapp  
-Copy flows  --> $IDP-HOME/flows  
-Copy views  --> $IDP-HOME/views  
+* Copy conf --> $IDP-HOME/conf  
+* Copy edit-webapp  --> $IDP-HOME/edit-webapp  
+* Copy flows  --> $IDP-HOME/flows  
+* Copy views  --> $IDP-HOME/views  
 
 Modify $IDP_HOME/conf/idp.properties  
 
@@ -55,14 +57,29 @@ Add TOTP bean to $IDP_HOME/conf/authn/general-authn.xml, element
         </bean>
 ```
 
+### Rebuild idp.war
+* run $IDP-HOME/bin/build.sh
+* If you need, move that war-file to  containers "webapps" directory (tomcat, jetty, etc)
+* Restart container
+
 Seed Fetching
 -------------
-
-TBD.  
 From LDAP, MongoDB, SQL, File, REST, Dummy(static)
+
+### From LDAP - External LDAP (IDM?)
+
+* Modify LDAP properties - totp-authn-beans.xml (url, userDn, password, base)  
+* Make sure that bean id "shibboleth.totp.seedfetcher" is pointing to "net.kvak.shibboleth.totpauth.authn.impl.seed.LdapSeedFetcher"  
+
+### From MongoDB - Experimental, just testing, but it works
+
+* Modify MongoDB properties - totp-authn-config.xml (mongoDbUrl, mongoDbName)  
+* Make sure that bean id "shibboleth.totp.seedfetcher" is pointing to "net.kvak.shibboleth.totpauth.authn.impl.seed.MongoSeedFetcher"  
 
 Adding new seed to user
 ----------------------
+
+At the moment you need to add your token codes to the repository with external process. I will create some kind of registeration flow to the IdP.
 
 TBD.  
 Own registration flow / External process.
