@@ -18,6 +18,7 @@
       <div class="content">
         <div class="column one">
           #parse("login-error.vm")
+          <p><strong>Register a new Token</strong></p><br>
 
           <form action="$flowExecutionUrl" method="post">
 
@@ -32,9 +33,13 @@
             </div>
 
             <div class="form-element-wrapper">
+               <img src="http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=otpauth%3A//totp/fred%40myapplication%3Fsecret%3DNAR5XTDD3EQU22YU">
+            </div>
+
+            <div class="form-element-wrapper">
               <button class="form-element form-button" type="submit" name="_eventId_proceed"
               onClick="this.childNodes[0].nodeValue='#springMessageText("idp.login.pleasewait", "Logging in, please wait...")'"
-              >#springMessageText("idp.login.login", "Login")</button>
+              >Register</button>
             </div>
           </form>
 

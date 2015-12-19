@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.warrenstrange.googleauth.GoogleAuthenticator;
+import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
+import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
 
 import net.kvak.shibboleth.totpauth.api.authn.SeedFetcher;
 import net.kvak.shibboleth.totpauth.api.authn.TokenValidator;
@@ -137,7 +139,7 @@ public class TotpTokenValidator extends AbstractValidationAction implements Toke
 			log.debug("{} authorize {} - {} ", getLogPrefix(), seed, token);
 			return gAuth.authorize(seed, token);
 		}
-		log.debug("{} Token code validation failed", getLogPrefix());
+		log.debug("{} Token code validation failed. Seed is not 16 char long", getLogPrefix());
 		return false;
 	}
 
@@ -151,4 +153,5 @@ public class TotpTokenValidator extends AbstractValidationAction implements Toke
 		return null;
 
 	}
+	
 }

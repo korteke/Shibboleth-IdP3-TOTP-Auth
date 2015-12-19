@@ -67,7 +67,7 @@ public class LdapSeedFetcher implements SeedFetcher {
 	}
 
 	/*
-	 * TODO Get multivalue attribute with all values
+	 * TODO Multivalue attribute with all values
 	 */
 	@SuppressWarnings("rawtypes")
 	public List<String> getAllTokenCodes(String user) {

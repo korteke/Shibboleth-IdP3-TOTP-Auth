@@ -3,11 +3,13 @@
 	parent="authn.abstract, authn/conditions">
 
 	<!-- This is a login flow for TOTP authentication -->
+	<!-- First call UserName & Password flow -->
 	<subflow-state id="CallPasswordFlow" subflow="authn/Password">
 		<input name="calledAsSubflow" value="true" />
 		<transition on="proceed" to="DisplayTotpForm" />
 	</subflow-state>
 
+	<!-- Display Token form -->
 	<view-state id="DisplayTotpForm" view="totp">
 		<on-render>
 			<evaluate expression="environment" result="viewScope.environment" />
@@ -22,7 +24,6 @@
 				result="viewScope.custom" />
 		</on-render>
 		<transition on="proceed" to="ExtractTotpFromForm" />
-
 	</view-state>
 
 	<view-state id="RegisterToken" view="totp-register">
@@ -38,7 +39,6 @@
 				expression="flowRequestContext.getActiveFlow().getApplicationContext().containsBean('shibboleth.CustomViewContext') ? flowRequestContext.getActiveFlow().getApplicationContext().getBean('shibboleth.CustomViewContext') : null"
 				result="viewScope.custom" />
 		</on-render>
-		
 		<transition on="AccountError" to="RegisterToken" />
 		<transition on="proceed" to="DisplayTotpForm" />
 
@@ -58,7 +58,8 @@
 
 		<transition on="InvalidCredentials" to="DisplayTotpForm" />
 		<transition on="NoCredentials" to="DisplayTotpForm" />
-		<transition on="AccountError" to="RegisterToken" />
+		<!-- At the moment user is redirected back to the totp form is he/she hasn't registered token -->
+		<transition on="AccountError" to="DisplayTotpForm" />
 
 		<transition on="proceed" to="proceed" />
 	</action-state>
