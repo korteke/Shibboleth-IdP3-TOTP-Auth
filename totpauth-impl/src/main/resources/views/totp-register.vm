@@ -1,5 +1,7 @@
 #set ($rpContext = $profileRequestContext.getSubcontext('net.shibboleth.idp.profile.context.RelyingPartyContext'))
 #set ($userName = $authenticationContext.getSubcontext('net.shibboleth.idp.authn.context.UsernamePasswordContext', true).getUsername())
+#set ($totpUrl = $authenticationContext.getSubcontext('net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext').getTotpUrl())
+#set ($sharedSecret = $authenticationContext.getSubcontext('net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext').getSharedSecret())
 ##
 <!DOCTYPE html>
 <html>
@@ -18,23 +20,23 @@
       <div class="content">
         <div class="column one">
           #parse("login-error.vm")
-          <p><strong>Register a new Token</strong></p><br>
+          <p><h3><strong><center>Register a new Token</center></strong></h3></p><br>
 
           <form action="$flowExecutionUrl" method="post">
 
+            <li> Download the Google Authenticator to your mobile phone </li>
+            <li> Open the app and scan the QR-code or manually enter code: <strong>$sharedSecret</strong></li>
+            <li> Enter presented Token Code to the box below the QR-Code and click <b>Register</b></li>
+            <br>
             <div class="form-element-wrapper">
-              <label for="tokenNumber">First Token code</label>
+               <center><img src="$totpUrl" height="166" width="166"></center>
+            </div>
+
+            <div class="form-element-wrapper">
+              <label for="tokenNumber">Token code</label>
               <input class="form-element form-field" id="j_tokenNumber1" name="j_tokenNumber1" type="text">
             </div>
 
-            <div class="form-element-wrapper">
-              <label for="tokenNumber">Second Token code</label>
-              <input class="form-element form-field" id="j_tokenNumber2" name="j_tokenNumber2" type="text">
-            </div>
-
-            <div class="form-element-wrapper">
-               <img src="http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=otpauth%3A//totp/fred%40myapplication%3Fsecret%3DNAR5XTDD3EQU22YU">
-            </div>
 
             <div class="form-element-wrapper">
               <button class="form-element form-button" type="submit" name="_eventId_proceed"
@@ -42,6 +44,7 @@
               >Register</button>
             </div>
           </form>
+          <li><a href="https://support.google.com/accounts/answer/1066447" target="_blank">Google Authenticator installation instructions</a></li>
 
         </div>
 

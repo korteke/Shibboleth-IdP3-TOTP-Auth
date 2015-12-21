@@ -23,6 +23,28 @@ public class TokenUserContext extends BaseContext {
 
 	/** The tokenSeed associated with the username. */
 	private ArrayList<String> tokenSeed = new ArrayList<String>();
+	
+	/* Url for QR-code */
+	private String totpUrl;
+	
+	/* TOTP shared secret */
+	private String sharedSecret;
+
+	public String getTotpUrl() {
+		return totpUrl;
+	}
+
+	public void setTotpUrl(String totpUrl) {
+		this.totpUrl = totpUrl;
+	}
+
+	public String getSharedSecret() {
+		return sharedSecret;
+	}
+
+	public void setSharedSecret(String sharedSecret) {
+		this.sharedSecret = sharedSecret;
+	}
 
 	private AuthState state = AuthState.OK;
 
