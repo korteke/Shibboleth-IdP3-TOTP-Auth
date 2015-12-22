@@ -99,7 +99,7 @@ public class TotpTokenValidator extends AbstractValidationAction implements Toke
 				while (it.hasNext()) {
 					result = validateToken(it.next(), tokenCtx.getTokenCode());
 					if (result) {
-						log.debug("{} Token authentication success for user: {}", getLogPrefix(), upCtx.getUsername());
+						log.info("{} Token authentication success for user: {}", getLogPrefix(), upCtx.getUsername());
 						tokenCtx.setState(AuthState.OK);
 						buildAuthenticationResult(profileRequestContext, authenticationContext);
 						return;
@@ -108,14 +108,15 @@ public class TotpTokenValidator extends AbstractValidationAction implements Toke
 			}
 			
 			if (tokenCtx.getState() == AuthState.REGISTER) {
-				log.debug("{} User: {} has not registered token", getLogPrefix(), upCtx.getUsername());
+				log.info("{} User: {} has not registered token", getLogPrefix(), upCtx.getUsername());
 				handleError(profileRequestContext, authenticationContext, "RegisterToken",
 						AuthnEventIds.ACCOUNT_ERROR);
 				return;
 			}
 
 			if (!result) {
-				log.debug("{} Token authentication failed for user: {}", getLogPrefix(), upCtx.getUsername());
+				log.info("{} Token authentication failed for user: {}", getLogPrefix(), upCtx.getUsername());
+				tokenCtx.setState(AuthState.CANT_VALIDATE);
 				handleError(profileRequestContext, authenticationContext, "InvalidCredentials",
 						AuthnEventIds.INVALID_CREDENTIALS);
 				return;

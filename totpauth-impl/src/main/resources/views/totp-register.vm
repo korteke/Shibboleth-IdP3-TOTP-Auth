@@ -2,6 +2,7 @@
 #set ($userName = $authenticationContext.getSubcontext('net.shibboleth.idp.authn.context.UsernamePasswordContext', true).getUsername())
 #set ($totpUrl = $authenticationContext.getSubcontext('net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext').getTotpUrl())
 #set ($sharedSecret = $authenticationContext.getSubcontext('net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext').getSharedSecret())
+#set ($errorMessage = $authenticationContext.getSubcontext('net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext').getErrorMessage())
 ##
 <!DOCTYPE html>
 <html>
@@ -9,6 +10,14 @@
   <meta charset="utf-8">
   <title>#springMessageText("idp.title", "Web Login Service")</title>
   <link rel="stylesheet" type="text/css" href="$request.getContextPath()/css/main.css">
+#if( "$errorMessage" != "")
+<style>
+p.error {
+    color: red;
+    font-weight:bold;
+}
+</style>
+#end
 </head>
 <body>
   <div class="wrapper">
@@ -20,8 +29,11 @@
       <div class="content">
         <div class="column one">
           #parse("login-error.vm")
-          <p><h3><strong><center>Register a new Token</center></strong></h3></p><br>
 
+          #if( "$errorMessage" != "")
+          <p><h3><strong><center>Register a new Token</center></strong></h3></p><br>
+	  <p class="error")>$errorMessage</p><br>
+          #end
           <form action="$flowExecutionUrl" method="post">
 
             <li> Download the Google Authenticator to your mobile phone </li>
@@ -34,7 +46,7 @@
 
             <div class="form-element-wrapper">
               <label for="tokenNumber">Token code</label>
-              <input class="form-element form-field" id="j_tokenNumber1" name="j_tokenNumber1" type="text">
+              <input class="form-element form-field" id="j_tokenNumber" name="j_tokenNumber" type="text">
             </div>
 
 

@@ -8,142 +8,155 @@ import javax.annotation.Nullable;
 
 public class TokenUserContext extends BaseContext {
 
-	public enum AuthState {
-		OK, ERROR, MISSING_SEED, REGISTER, CANT_VALIDATE, UNKNOWN
-	}
+  public enum AuthState {
+        OK, ERROR, MISSING_SEED, REGISTER, CANT_VALIDATE, UNKNOWN
+  }
 
-	/** The username. */
-	private String username;
+  /** The username. */
+  private String username;
 
-	/** The password associated with the username. */
-	private String password;
+  /** The password associated with the username. */
+  private String password;
 
-	/** The tokenCode associated with the username. */
-	private int tokenCode;
+  /** The tokenCode associated with the username. */
+  private int tokenCode;
 
-	/** The tokenSeed associated with the username. */
-	private ArrayList<String> tokenSeed = new ArrayList<String>();
-	
-	/* Url for QR-code */
-	private String totpUrl;
-	
-	/* TOTP shared secret */
-	private String sharedSecret;
+  /** The tokenSeed associated with the username. */
+  private ArrayList<String> tokenSeed = new ArrayList<String>();
+    
+  /** Url for QR-code. */
+  private String totpUrl;
+    
+  /** TOTP shared secret. */
+  private String sharedSecret;
+  
+  /** Get error messages. */
+  public String getErrorMessage() {
+	  if (this.getState() == AuthState.REGISTER) {
+		  return "You have to register at least one valid token";
+	  } else if (this.getState() == AuthState.CANT_VALIDATE) {
+		  return "Invalid Token Code. Try again.";
+	  }
+	return "";
+}
 
-	public String getTotpUrl() {
-		return totpUrl;
-	}
+public void setErrorMessage(String errorMessage) {
+}
 
-	public void setTotpUrl(String totpUrl) {
-		this.totpUrl = totpUrl;
-	}
+public String getTotpUrl() {
+    return totpUrl;
+  }
 
-	public String getSharedSecret() {
-		return sharedSecret;
-	}
+  public void setTotpUrl(String totpUrl) {
+    this.totpUrl = totpUrl;
+  }
 
-	public void setSharedSecret(String sharedSecret) {
-		this.sharedSecret = sharedSecret;
-	}
+  public String getSharedSecret() {
+    return sharedSecret;
+  }
 
-	private AuthState state = AuthState.OK;
+  public void setSharedSecret(String sharedSecret) {
+    this.sharedSecret = sharedSecret;
+  }
 
-	public AuthState getState() {
-		return state;
-	}
+  private AuthState state = AuthState.OK;
 
-	public void setState(AuthState state) {
-		this.state = state;
-	}
+  public AuthState getState() {
+    return state;
+  }
 
-	/**
-	 * Gets the token seed.
-	 *
-	 * @return the tokenSeed
-	 */
-	public ArrayList<String> getTokenSeed() {
-		return tokenSeed;
-	}
+  public void setState(AuthState state) {
+    this.state = state;
+  }
 
-	/**
-	 * Sets the token seed.
-	 *
-	 * @param name
-	 *            the tokenSeed
-	 *
-	 * @return this tokenSeed
-	 */
-	public void setTokenSeed(String tokenSeed) {		
-		this.tokenSeed.add(tokenSeed);
-	}
+  /**
+  * Gets the token seed.
+  *
+  * @return the tokenSeed
+  */
+  public ArrayList<String> getTokenSeed() {
+    return tokenSeed;
+  }
 
-	/**
-	 * Gets the username.
-	 *
-	 * @return the username
-	 */
-	@Nullable
-	public String getUsername() {
-		return username;
-	}
+  /**
+     * Sets the token seed.
+     *
+     * @param name
+     *            the tokenSeed
+     *
+     * @return this tokenSeed
+     */
+  public void setTokenSeed(String tokenSeed) {        
+    this.tokenSeed.add(tokenSeed);
+  }
 
-	/**
-	 * Sets the username.
-	 *
-	 * @param name
-	 *            the username
-	 *
-	 * @return this context
-	 */
-	public TokenUserContext setUsername(@Nullable final String name) {
-		username = name;
-		return this;
-	}
+  /**
+     * Gets the username.
+     *
+     * @return the username
+     */
+  @Nullable
+  public String getUsername() {
+    return username;
+  }
 
-	/**
-	 * Gets the password associated with the username.
-	 *
-	 * @return password associated with the username
-	 */
-	@Nullable
-	public String getPassword() {
-		return password;
-	}
+  /**
+     * Sets the username.
+     *
+     * @param name
+     *            the username
+     *
+     * @return this context
+     */
+  public TokenUserContext setUsername(@Nullable final String name) {
+    username = name;
+    return this;
+  }
 
-	/**
-	 * Sets the password associated with the username.
-	 *
-	 * @param pass
-	 *            password associated with the username
-	 *
-	 * @return this context
-	 */
-	public TokenUserContext setPassword(@Nullable final String pass) {
-		password = pass;
-		return this;
-	}
+  /**
+     * Gets the password associated with the username.
+     *
+     * @return password associated with the username
+     */
+  @Nullable
+  public String getPassword() {
+    return password;
+  }
 
-	/**
-	 * Gets the tokenCode.
-	 *
-	 * @return the tokenCode
-	 */
-	@Nullable
-	public int getTokenCode() {
-		return tokenCode;
-	}
+  /**
+     * Sets the password associated with the username.
+     *
+     * @param pass
+     *            password associated with the username
+     *
+     * @return this context
+     */
+  public TokenUserContext setPassword(@Nullable final String pass) {
+    password = pass;
+    return this;
+  }
 
-	/**
-	 * Sets the tokenCode associated with the username.
-	 *
-	 * @param pass
-	 *            tokenCode associated with the username
-	 *
-	 * @return this context
-	 */
-	public TokenUserContext setTokenCode(@Nullable final int tCode) {
-		tokenCode = tCode;
-		return this;
-	}
+  /**
+     * Gets the tokenCode.
+     *
+     * @return the tokenCode
+     */
+  @Nullable
+  public int getTokenCode() {
+    return tokenCode;
+  }
+
+  /**
+     * Sets the tokenCode associated with the username.
+     *
+     * @param pass
+     *            tokenCode associated with the username
+     *
+     * @return this context
+     */
+  public TokenUserContext setTokenCode(@Nullable final int tokenCode) {
+    this.tokenCode = tokenCode;
+    return this;
+  }
 
 }
