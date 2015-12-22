@@ -21,6 +21,18 @@
 
 	<bean id="TotpTokenValidator" class="net.kvak.shibboleth.totpauth.authn.impl.TotpTokenValidator" scope="prototype"
 		p:httpServletRequest-ref="shibboleth.HttpServletRequest" p:seedFetcher-ref="shibboleth.totp.seedfetcher" p:gAuth-ref="shibboleth.totp.gAuth" />
+        
+    <bean id="RegisterNewToken" class="net.kvak.shibboleth.totpauth.authn.impl.RegisterNewToken" scope="prototype"
+        p:httpServletRequest-ref="shibboleth.HttpServletRequest" p:gAuth-ref="shibboleth.totp.gAuth" />
+        
+    <bean id="GenerateNewToken" class="net.kvak.shibboleth.totpauth.authn.impl.GenerateNewToken" scope="prototype"
+        p:httpServletRequest-ref="shibboleth.HttpServletRequest" 
+        p:gAuth-ref="shibboleth.totp.gAuth" 
+        p:ldapTemplate-ref="ldapTemplate" 
+        p:tokenCodeField-ref="shibboleth.authn.tokenCodeField">
+        <constructor-arg ref="shibboleth.authn.seedAttribute" />
+		<constructor-arg ref="shibboleth.authn.userAttribute" />
+    </bean>
 
 	<bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
 		<property name="url" value="LDAP_SERVER_URL" />

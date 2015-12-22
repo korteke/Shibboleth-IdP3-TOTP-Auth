@@ -3,6 +3,7 @@ package net.kvak.shibboleth.totpauth.authn.impl;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
@@ -61,7 +62,7 @@ public class ExtractTokenFromForm extends AbstractExtractionAction {
 		final HttpServletRequest request = getHttpServletRequest();
 
 		if (request == null) {
-			log.debug("{} Empty request", getLogPrefix());
+			log.debug("{} Empty HttpServletRequest", getLogPrefix());
 			ActionSupport.buildEvent(profileRequestContext, AuthnEventIds.NO_CREDENTIALS);
 			return;
 		}
@@ -73,7 +74,7 @@ public class ExtractTokenFromForm extends AbstractExtractionAction {
 			/** get tokencode from request **/
 			String value = StringSupport.trimOrNull(request.getParameter(tokenCodeField));
 
-			if (!isNumeric(value) && !Strings.isNullOrEmpty(value)) {
+			if (!StringUtils.isNumeric(value) || Strings.isNullOrEmpty(value)) {
 				log.debug("{} Empty or invalid tokenCode", getLogPrefix());
 				ActionSupport.buildEvent(profileRequestContext, AuthnEventIds.INVALID_CREDENTIALS);
 				return;
@@ -87,18 +88,8 @@ public class ExtractTokenFromForm extends AbstractExtractionAction {
 			}
 
 		} catch (Exception e) {
-			log.warn("{} Login by {} produced exception", getLogPrefix(), e);
+			log.warn("{} Login by {} produced exception", getLogPrefix(),  e);
 		}
-	}
-
-	@SuppressWarnings("unused")
-	public static boolean isNumeric(String str) {
-		try {
-			double d = Double.parseDouble(str);
-		} catch (NumberFormatException nfe) {
-			return false;
-		}
-		return true;
 	}
 
 }

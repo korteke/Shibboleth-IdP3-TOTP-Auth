@@ -1,16 +1,16 @@
-[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/korteke/Shibboleth-IdP3-TOTP-Auth/blob/master/LICENSE)
+[![Apache License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 # Shibboleth-IdP3-TOTP-Auth
 Google authenticator authentication module for Shibboleth IdP v3.  
 Work in progress. This is the first "working" implementation. 
 
-Uses External LDAP, MongoDB(EXPERIMENTAL!) or Static for seed fetching
+Uses External LDAP, MongoDB(EXPERIMENTAL!) or Static for seed fetching.
 
 Requirements
 ------------
 
 Shibboleth IdP v3.2.x  
-Java 7
+Java 8
 
 Installing
 ----------
@@ -67,6 +67,11 @@ Seed Fetching
 From LDAP, MongoDB, SQL, File, REST, Dummy(static)
 
 ### From LDAP - External LDAP (IDM?)
+At the moment this plugin fetch users token seeds from the attribute "carLicense" which is multivalues.  
+You can change the source attribute by editing bean "shibboleth.authn.seedAttribute" which is defined at totp-authn-config.xml.    
+    
+This plugin also assumes that your users unique userID is "uid" attribute.    
+This can be changed by editing bean "shibboleth.authn.userAttribute" at totp-authn-config.xml.  
 
 * Modify LDAP properties - totp-authn-beans.xml (url, userDn, password, base)  
 * Make sure that bean id "shibboleth.totp.seedfetcher" is pointing to "net.kvak.shibboleth.totpauth.authn.impl.seed.LdapSeedFetcher"  
@@ -79,10 +84,11 @@ From LDAP, MongoDB, SQL, File, REST, Dummy(static)
 Adding new seed to user
 ----------------------
 
-At the moment you need to add your token codes to the repository with external process. I will create some kind of registeration flow to the IdP.
+~~At the moment you need to add your token codes to the repository with external process. I will create some kind of registeration flow to the IdP.~~ 
+At the TOTP login page there is a button "Register a new token" which triggers new flow where users can register their tokens.  
 
-TBD.  
-Own registration flow / External process.
+This work ATM only with the LDAP seedFetcher.
+MongoDB registeration flow is probably coming soon.  
 
 
 Requesting new Authentication Context Class with Shibboleth SP

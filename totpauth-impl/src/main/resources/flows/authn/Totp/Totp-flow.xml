@@ -12,6 +12,8 @@
 	<!-- Display Token form -->
 	<view-state id="DisplayTotpForm" view="totp">
 		<on-render>
+			<set name="flowScope.isRegisterEnabled" value=" 'true' " />
+
 			<evaluate expression="environment" result="viewScope.environment" />
 			<evaluate expression="opensamlProfileRequestContext" result="viewScope.profileRequestContext" />
 			<evaluate expression="opensamlProfileRequestContext.getSubcontext(T(net.shibboleth.idp.authn.context.AuthenticationContext))"
@@ -23,11 +25,13 @@
 				expression="flowRequestContext.getActiveFlow().getApplicationContext().containsBean('shibboleth.CustomViewContext') ? flowRequestContext.getActiveFlow().getApplicationContext().getBean('shibboleth.CustomViewContext') : null"
 				result="viewScope.custom" />
 		</on-render>
+
 		<transition on="proceed" to="ExtractTotpFromForm" />
 	</view-state>
 
 	<view-state id="RegisterToken" view="totp-register">
 		<on-render>
+			<evaluate expression="GenerateNewToken" /> <!-- Generate new token -->
 			<evaluate expression="environment" result="viewScope.environment" />
 			<evaluate expression="opensamlProfileRequestContext" result="viewScope.profileRequestContext" />
 			<evaluate expression="opensamlProfileRequestContext.getSubcontext(T(net.shibboleth.idp.authn.context.AuthenticationContext))"
@@ -39,8 +43,9 @@
 				expression="flowRequestContext.getActiveFlow().getApplicationContext().containsBean('shibboleth.CustomViewContext') ? flowRequestContext.getActiveFlow().getApplicationContext().getBean('shibboleth.CustomViewContext') : null"
 				result="viewScope.custom" />
 		</on-render>
+
 		<transition on="AccountError" to="RegisterToken" />
-		<transition on="proceed" to="DisplayTotpForm" />
+		<transition on="proceed" to="RegisterNewToken" />
 
 	</view-state>
 
@@ -62,6 +67,16 @@
 		<transition on="AccountError" to="DisplayTotpForm" />
 
 		<transition on="proceed" to="proceed" />
+	</action-state>
+
+
+	<action-state id="RegisterNewToken">
+		<evaluate expression="RegisterNewToken" />
+		<evaluate expression="'proceed'" />
+
+		<transition on="InvalidCredentials" to="RegisterToken" />
+		<transition on="AccountError" to="RegisterToken" />
+		<transition on="proceed" to="DisplayTotpForm" />
 	</action-state>
 
 	<bean-import resource="../../../conf/authn/totp-authn-beans.xml" />

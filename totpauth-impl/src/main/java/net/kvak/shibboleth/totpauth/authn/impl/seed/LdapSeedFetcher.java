@@ -1,22 +1,21 @@
 package net.kvak.shibboleth.totpauth.authn.impl.seed;
 
-import static org.springframework.ldap.query.LdapQueryBuilder.query;
-
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.naming.NamingEnumeration;
-import javax.naming.directory.Attributes;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ldap.NamingException;
-import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.ldap.core.DirContextOperations;
+import org.springframework.ldap.core.DistinguishedName;
 import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.core.support.AbstractContextMapper;
+import org.springframework.ldap.filter.EqualsFilter;
 
 import net.kvak.shibboleth.totpauth.api.authn.SeedFetcher;
 import net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext;
 import net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext.AuthState;
 
+@SuppressWarnings("deprecation")
 public class LdapSeedFetcher implements SeedFetcher {
 
 	/* Class logger */
@@ -46,7 +45,7 @@ public class LdapSeedFetcher implements SeedFetcher {
 		log.debug("Entering LdapSeedFetcher");
 
 		try {
-			List<String> list = getAllTokenCodes(username);
+			ArrayList<String> list = getAllTokenCodes(username);
 			if (list.isEmpty() || list.get(0) == null) {
 				tokenUserCtx.setState(AuthState.REGISTER);
 				log.debug("List with token seeds was empty");
@@ -66,39 +65,50 @@ public class LdapSeedFetcher implements SeedFetcher {
 
 	}
 
-	/*
-	 * TODO Multivalue attribute with all values
-	 */
-	@SuppressWarnings("rawtypes")
-	public List<String> getAllTokenCodes(String user) {
-		log.debug("Entering getAllTokenCodes with username: {}", user);
-		return ldapTemplate.search(query().where(userAttribute).is(user),
+	public ArrayList<String> getAllTokenCodes(String user) {
+		log.debug("Entering getAllTokenCodes");
+		ArrayList<String> tokenList = new ArrayList<String>();
 
-		new AttributesMapper<String>() {
+		try {
+			DirContextOperations context = ldapTemplate.lookupContext(fetchDn(user));
+			String[] values = context.getStringAttributes(seedAttribute);
 
-			public String mapFromAttributes(Attributes attrs) throws NamingException, javax.naming.NamingException {
-
-				log.debug("attrs size: {}.", attrs.size());
-
-				NamingEnumeration e = attrs.getIDs();
-				boolean resu = false;
-
-				while (e.hasMore()) {
-					String attri = e.next().toString();
-					log.debug("Attribute {}", attri);
-					if (attri.toLowerCase().equals(seedAttribute.toString().toLowerCase())) {
-						resu = true;
-						break;
+			if (values.length > 0) {
+				for (String value : values) {
+					if (log.isDebugEnabled()) {
+						log.debug("Token value {}", value);
 					}
-				}
-
-				if (resu) {
-					return (String) attrs.get(seedAttribute).get();
-				} else {
-					return null;
+					tokenList.add(value);
 				}
 			}
-		});
+			
+		} catch (Exception e) {
+			log.debug("Error with getAllTokenCodes", e);
+		}
+		
+		return tokenList;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private String fetchDn(String userName) {
+
+		String dn = "";
+		EqualsFilter filter = new EqualsFilter(userAttribute, userName);
+		log.debug("{} Trying to find user {} dn from ldap with filter {}", userName, filter.encode());
+
+		List result = ldapTemplate.search(DistinguishedName.EMPTY_PATH, filter.toString(), new AbstractContextMapper() {
+			protected Object doMapFromContext(DirContextOperations ctx) {
+				return ctx.getDn().toString();
+			}
+		});
+		if (result.size() == 1) {
+			log.debug("User {} relative DN is: {}", userName, (String) result.get(0));
+			dn = (String) result.get(0);
+		} else {
+			log.debug("{} User not found or not unique. DN size: {}", result.size());
+			throw new RuntimeException("User not found or not unique");
+		}
+
+		return dn;
+	}
 }

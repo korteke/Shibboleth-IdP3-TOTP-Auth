@@ -1,5 +1,6 @@
 #set ($rpContext = $profileRequestContext.getSubcontext('net.shibboleth.idp.profile.context.RelyingPartyContext'))
 #set ($userName = $authenticationContext.getSubcontext('net.shibboleth.idp.authn.context.UsernamePasswordContext', true).getUsername())
+#set ($errorMessage = $authenticationContext.getSubcontext('net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext').getErrorMessage())
 ##
 <!DOCTYPE html>
 <html>
@@ -7,6 +8,16 @@
   <meta charset="utf-8">
   <title>#springMessageText("idp.title", "Web Login Service")</title>
   <link rel="stylesheet" type="text/css" href="$request.getContextPath()/css/main.css">
+
+#if( "$errorMessage" != "")
+<style>
+p.error {
+    color: red;
+    font-weight:bold;
+}
+</style>
+#end
+
 </head>
 <body>
   <div class="wrapper">
