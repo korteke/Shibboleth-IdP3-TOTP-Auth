@@ -2,7 +2,7 @@
 
 # Shibboleth-IdP3-TOTP-Auth
 Google authenticator authentication module for Shibboleth IdP v3.  
-Work in progress. This is the first "working" implementation. 
+Work in progress!  
 
 Uses External LDAP, MongoDB(EXPERIMENTAL!) or Static for seed fetching.
 
@@ -67,7 +67,7 @@ Seed Fetching
 From LDAP, MongoDB, SQL, File, REST, Dummy(static)
 
 ### From LDAP - External LDAP (IDM?)
-At the moment this plugin fetch users token seeds from the attribute "carLicense" which is multivalues.  
+This plugin fetch token seeds from the attribute called "carLicense" which is multivalued (user can have multiple tokens).  
 You can change the source attribute by editing bean "shibboleth.authn.seedAttribute" which is defined at totp-authn-config.xml.    
     
 This plugin also assumes that your users unique userID is "uid" attribute.    
@@ -84,8 +84,8 @@ This can be changed by editing bean "shibboleth.authn.userAttribute" at totp-aut
 Adding new seed to user
 ----------------------
 
-~~At the moment you need to add your token codes to the repository with external process. I will create some kind of registeration flow to the IdP.~~ 
-At the TOTP login page there is a button "Register a new token" which triggers new flow where users can register their tokens.  
+~~At the moment you need to add your token codes to the repository with external process. I will create some kind of registeration flow to the IdP.~~   
+TOTP login page has a button called "Register a new token" which triggers a new flow where users can register their tokens.  ATM the button is visible to all users. Next version you can choose if the users can register new tokens.  
 
 This work ATM only with the LDAP seedFetcher.
 MongoDB registeration flow is probably coming soon.  
