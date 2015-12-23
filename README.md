@@ -81,6 +81,12 @@ This can be changed by editing bean "shibboleth.authn.userAttribute" at totp-aut
 * Modify MongoDB properties - totp-authn-config.xml (mongoDbUrl, mongoDbName)  
 * Make sure that bean id "shibboleth.totp.seedfetcher" is pointing to "net.kvak.shibboleth.totpauth.authn.impl.seed.MongoSeedFetcher"  
 
+### From Dummy - Static code
+
+* Make sure that bean id "shibboleth.totp.seedfetcher" is pointing to "net.kvak.shibboleth.totpauth.authn.impl.seed.DummySeedFetcher"
+* Register this token to your mobile device:  
+![alt tag](https://raw.githubusercontent.com/korteke/Shibboleth-IdP3-TOTP-Auth/master/totp_code_qr.png)
+
 Adding new seed to user
 ----------------------
 
