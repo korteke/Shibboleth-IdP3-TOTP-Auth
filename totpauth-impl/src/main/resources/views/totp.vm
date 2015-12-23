@@ -35,7 +35,7 @@ p.error {
 
             <div class="form-element-wrapper">
               <label for="tokenNumber">Token code</label>
-              <input class="form-element form-field" id="j_tokenNumber" name="j_tokenNumber" type="text">
+              <input class="form-element form-field" id="j_tokenNumber" name="j_tokenNumber" type="text" autofocus>
             </div>
 
             <div class="form-element-wrapper">

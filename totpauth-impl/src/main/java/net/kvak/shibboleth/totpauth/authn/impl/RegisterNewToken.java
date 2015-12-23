@@ -99,9 +99,9 @@ public class RegisterNewToken extends AbstractProfileAction {
 		this.gAuth = gAuth;
 	}
 
-	/** Constructor 
-	 * Initialize user and seed attributes
-	 * */
+	/**
+	 * Constructor Initialize user and seed attributes
+	 */
 	public RegisterNewToken(String seedAttribute, String userAttribute) {
 		log.debug("Construct RegisterNewToken with {} - {}", seedAttribute, userAttribute);
 		this.userAttribute = userAttribute;
@@ -149,7 +149,7 @@ public class RegisterNewToken extends AbstractProfileAction {
 		if (!StringUtils.isNumeric(token) || Strings.isNullOrEmpty(token)) {
 			log.debug("{} Empty or invalid tokenCode", getLogPrefix());
 			tokenCtx.setState(AuthState.CANT_VALIDATE);
-			
+
 			ActionSupport.buildEvent(profileRequestContext, AuthnEventIds.INVALID_CREDENTIALS);
 			return;
 
@@ -162,23 +162,24 @@ public class RegisterNewToken extends AbstractProfileAction {
 				if (!Strings.isNullOrEmpty(dn)) {
 					log.debug("{} User {} DN is {}", getLogPrefix(), upCtx.getUsername(), dn);
 					boolean result = registerToken(dn, tokenCtx.getSharedSecret());
-					
+
 					if (!result) {
 						ActionSupport.buildEvent(profileRequestContext, AuthnEventIds.ACCOUNT_ERROR);
 					}
+				} else {
+					log.debug("Invalid token. Returning.");
+					tokenCtx.setState(AuthState.CANT_VALIDATE);
+					ActionSupport.buildEvent(profileRequestContext, AuthnEventIds.INVALID_CREDENTIALS);
 				}
-
 			}
-			log.debug("Invalid token. Returning.");
-			tokenCtx.setState(AuthState.CANT_VALIDATE);
-			ActionSupport.buildEvent(profileRequestContext, AuthnEventIds.INVALID_CREDENTIALS);
+
 		}
 	}
 
 	private boolean registerToken(String dn, String sharedSecret) {
 
 		log.debug("Entering registerToken");
-		
+
 		try {
 			Attribute attr = new BasicAttribute(seedAttribute, sharedSecret);
 			log.debug("Created new BasicAttribute [{} - {}]", attr.getID(), attr.get(0));
