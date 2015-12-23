@@ -98,7 +98,7 @@ Adding new seed to user
 ~~At the moment you need to add your token codes to the repository with external process. I will create some kind of registeration flow to the IdP.~~   
 TOTP login page has a button called "Register a new token" which triggers a new flow where users can register their tokens. ATM the button is visible to all users. Next version you can choose if the users can register new tokens.  
 
-This work ATM only with the LDAP seedFetcher.
+This works at the moment only with the LDAP seedFetcher.
 MongoDB registeration flow is probably coming soon.  
 
 
@@ -113,3 +113,7 @@ Add new Session Initiator
   <SessionInitiator type="SAML2" acsIndex="1" template="bindingTemplate.html" authnContextClassRef="urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken"/>  
 </SessionInitiator>  
 ```
+
+After the new SessionInitiator is registered you can call your SP with https://YOUR_SP_ADDRESS/Shibboleth.sso/totp  
+That creates SAML 2.0 Authn Request where SP wants authnContextClassRef == urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken  
+So when the IdP receives that request it passes the request to the authn/Totp authentication flow (this module)
