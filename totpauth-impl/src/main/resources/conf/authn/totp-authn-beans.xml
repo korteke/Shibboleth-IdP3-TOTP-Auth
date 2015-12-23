@@ -56,13 +56,15 @@
 
 	<!-- For MongoDB -->
 	<!--bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.MongoSeedFetcher"/-->
-	
-	<!-- For Dummy -->
-	<!--bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.DummySeedFetcher"/-->
-	
+	<!-- 
 	<bean id="shibboleth.totp.mongoConfig" class="net.kvak.shibboleth.totpauth.authn.impl.seed.MongoDB.SpringMongoConfiguration">
 		<constructor-arg ref="shibboleth.authn.mongoDbName" />
 		<constructor-arg ref="shibboleth.authn.mongoDbUrl" />
 	</bean>
+	-->
+	
+	<!-- For Dummy -->
+	<!--bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.DummySeedFetcher"/-->
+	
 
 </beans>

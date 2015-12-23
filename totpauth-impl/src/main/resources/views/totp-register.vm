@@ -31,14 +31,16 @@ p.error {
           #parse("login-error.vm")
 
           #if( "$errorMessage" != "")
+          
           <p><h3><strong><center>Register a new Token</center></strong></h3></p><br>
-	  <p class="error")>$errorMessage</p><br>
+	      <p class="error")>$errorMessage</p><br>
+          
           #end
           <form action="$flowExecutionUrl" method="post">
 
-            <li> Download the Google Authenticator to your mobile phone </li>
-            <li> Open the app and scan the QR-code or manually enter code: <strong>$sharedSecret</strong></li>
-            <li> Enter presented Token Code to the box below the QR-Code and click <b>Register</b></li>
+            <li> Download the Google Authenticator to your mobile device </li>
+            <li> Open the app and scan the QR-image or manually enter code: <strong>$sharedSecret</strong></li>
+            <li> Enter the generated Token Code in the box below the QR-image and click <b>Register</b></li>
             <br>
             <div class="form-element-wrapper">
                <center><img src="$totpUrl" height="166" width="166"></center>
@@ -52,7 +54,7 @@ p.error {
 
             <div class="form-element-wrapper">
               <button class="form-element form-button" type="submit" name="_eventId_proceed"
-              onClick="this.childNodes[0].nodeValue='#springMessageText("idp.login.pleasewait", "Logging in, please wait...")'"
+              onClick="this.childNodes[0].nodeValue='#springMessageText("idp.token.register", "Registering token, please wait...")'"
               >Register</button>
             </div>
           </form>
