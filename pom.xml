@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>net.kvak.shibboleth</groupId>
 	<artifactId>totpauth-parent</artifactId>
-	<version>0.5.0</version>
+	<version>0.5.1</version>
 	<packaging>pom</packaging>
 	<name>Shibboleth IdP v3 TOTP auth parent</name>
 	<description>TOTP based authentication module for Shibboleth IdP v3</description>
@@ -26,7 +26,7 @@
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<shib.idp.version>3.2.0</shib.idp.version>
 		<gson.version>2.3.1</gson.version>
-		<mobile.auth.version>0.5.0</mobile.auth.version>
+		<mobile.auth.version>0.5.1</mobile.auth.version>
 		<com.warrenstrange.version>0.5.0</com.warrenstrange.version>
 		<org.springframework.ldap.version>2.0.4.RELEASE</org.springframework.ldap.version>
 	</properties>
