@@ -6,7 +6,9 @@
 Google authenticator authentication module for Shibboleth IdP v3.  
 
 
-Uses External LDAP, MongoDB(EXPERIMENTAL!) or Static for seed fetching.
+Uses External LDAP, MongoDB(EXPERIMENTAL!) or Static for seed fetching.  
+
+Working example with Vagrant https://github.com/korteke/shibboleth-vagrant
 
 Requirements
 ------------
