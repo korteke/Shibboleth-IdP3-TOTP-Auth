@@ -1,4 +1,5 @@
 [![Apache License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![Build Status](https://travis-ci.org/korteke/Shibboleth-IdP3-TOTP-Auth.svg?branch=master)](https://travis-ci.org/korteke/Shibboleth-IdP3-TOTP-Auth)
 
 # Shibboleth-IdP3-TOTP-Auth
 > Working example of the TOTP authenticator. Work in progress! Refactoring needed! Localization needed.  
