@@ -96,22 +96,20 @@ public class LdapSeedFetcher implements SeedFetcher {
 		EqualsFilter filter = new EqualsFilter(userAttribute, userName);
 		log.debug("Trying to find user {} dn from ldap with filter {}", userName, filter.encode());
 		try {
-		List result = ldapTemplate.search(DistinguishedName.EMPTY_PATH, filter.toString(), new AbstractContextMapper() {
-			protected Object doMapFromContext(DirContextOperations ctx) {
-				return ctx.getDn().toString();
+			List result = ldapTemplate.search(DistinguishedName.EMPTY_PATH, filter.toString(), new AbstractContextMapper() {
+				protected Object doMapFromContext(DirContextOperations ctx) {
+					return ctx.getDn().toString();
+				}
+			});
+			if (result.size() == 1) {
+				log.debug("User {} relative DN is: {}", userName, (String) result.get(0));
+				dn = (String) result.get(0);
+				return dn;
 			}
-		});
-		} catch (Exception e) {
-		log.debug("Error with fetchDn", e);
-		}
-		if (result.size() == 1) {
-			log.debug("User {} relative DN is: {}", userName, (String) result.get(0));
-			dn = (String) result.get(0);
-		} else {
-			log.debug("{} User not found or not unique. DN size: {}", result.size());
+		    } catch (Exception e) {
+			log.debug("Error with fetchDn: ", e);
+			log.debug("User not found or not unique. DN size: {}", result.size());
+		    }
 			throw new RuntimeException("User not found or not unique");
 		}
-
-		return dn;
 	}
-}
