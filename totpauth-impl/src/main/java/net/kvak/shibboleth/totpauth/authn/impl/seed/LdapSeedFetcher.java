@@ -94,13 +94,16 @@ public class LdapSeedFetcher implements SeedFetcher {
 
 		String dn = "";
 		EqualsFilter filter = new EqualsFilter(userAttribute, userName);
-		log.debug("{} Trying to find user {} dn from ldap with filter {}", userName, filter.encode());
-
+		log.debug("Trying to find user {} dn from ldap with filter {}", userName, filter.encode());
+		try {
 		List result = ldapTemplate.search(DistinguishedName.EMPTY_PATH, filter.toString(), new AbstractContextMapper() {
 			protected Object doMapFromContext(DirContextOperations ctx) {
 				return ctx.getDn().toString();
 			}
 		});
+		} catch (Exception e) {
+		log.debug("Error with fetchDn", e);
+		}
 		if (result.size() == 1) {
 			log.debug("User {} relative DN is: {}", userName, (String) result.get(0));
 			dn = (String) result.get(0);
