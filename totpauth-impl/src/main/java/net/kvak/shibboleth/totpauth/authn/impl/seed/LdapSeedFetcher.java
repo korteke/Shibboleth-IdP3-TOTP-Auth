@@ -101,6 +101,7 @@ public class LdapSeedFetcher implements SeedFetcher {
 					return ctx.getDn().toString();
 				}
 			});
+			log.debug("DN size: {}", result.size());
 			if (result.size() == 1) {
 				log.debug("User {} relative DN is: {}", userName, (String) result.get(0));
 				dn = (String) result.get(0);
@@ -108,7 +109,7 @@ public class LdapSeedFetcher implements SeedFetcher {
 			}
 		    } catch (Exception e) {
 			log.debug("Error with fetchDn: ", e);
-			log.debug("User not found or not unique. DN size: {}", result.size());
+
 		    }
 			throw new RuntimeException("User not found or not unique");
 		}
