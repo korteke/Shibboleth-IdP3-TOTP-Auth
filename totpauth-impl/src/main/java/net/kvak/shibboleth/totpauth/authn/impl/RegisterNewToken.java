@@ -99,6 +99,12 @@ public class RegisterNewToken extends AbstractProfileAction {
 		this.gAuth = gAuth;
 	}
 
+        private DistinguishedName path;
+
+        public void setBaseDn(String baseDn) {
+                this.path = new DistinguishedName(baseDn);
+        }
+
 	/**
 	 * Constructor Initialize user and seed attributes
 	 */
@@ -201,7 +207,7 @@ public class RegisterNewToken extends AbstractProfileAction {
 		EqualsFilter f = new EqualsFilter(userAttribute, username);
 		log.debug("{} Trying to find user {} dn from ldap with filter {}", getLogPrefix(), username, f.encode());
 
-		List result = ldapTemplate.search(DistinguishedName.EMPTY_PATH, f.toString(), new AbstractContextMapper() {
+		List result = ldapTemplate.search(path, f.toString(), new AbstractContextMapper() {
 			protected Object doMapFromContext(DirContextOperations ctx) {
 				return ctx.getDn().toString();
 			}
