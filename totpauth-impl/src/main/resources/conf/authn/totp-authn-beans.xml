@@ -55,6 +55,7 @@
 		<constructor-arg ref="shibboleth.authn.smsGatewayUser" />
 		<constructor-arg ref="shibboleth.authn.smsGatewayPassword" />
 		<property name="ldapTemplate" ref="ldapTemplate" />
+                <property name="baseDn" value="%{idp.authn.LDAP.baseDN}" />
 	</bean>
 
 	<!-- For MongoDB -->
