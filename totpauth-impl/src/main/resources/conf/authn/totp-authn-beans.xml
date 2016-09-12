@@ -51,6 +51,9 @@
 	<bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.LdapSeedFetcher">
 		<constructor-arg ref="shibboleth.authn.seedAttribute" />
 		<constructor-arg ref="shibboleth.authn.userAttribute" />
+		<constructor-arg ref="shibboleth.authn.phoneAttribute" />
+		<constructor-arg ref="shibboleth.authn.smsGatewayUser" />
+		<constructor-arg ref="shibboleth.authn.smsGatewayPassword" />
 		<property name="ldapTemplate" ref="ldapTemplate" />
 	</bean>
 
