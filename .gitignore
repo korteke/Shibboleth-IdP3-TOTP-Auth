@@ -6,9 +6,10 @@
 # Mac
 .DS_Store
 
-# Maven
-log/
-target/
+# Gradle
+totpauth-api/build/
+totpauth-impl/build/
+.gradle/*
 
 # Java
 .class
