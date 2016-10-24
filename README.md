@@ -20,7 +20,7 @@ Java 8
 Installing
 ----------
 
-* Compile souce code with maven - ```mvn clean package```
+* Compile souce code with gradle - ```gradle command commeth```
 * Copy and extract totpauth-parent/totpauth-impl/target/totpauth-impl-0.5.1-bin.zip
 
 Directory structure:
