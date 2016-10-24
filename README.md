@@ -23,10 +23,28 @@ Java 8
 Installing
 ----------
 
-* Compile souce code with gradle -
-    ```
-        gradle command commeth
-    ```
+You'll need to install gradle first. This can easily be done on macOS with
+Homebrew and a few other tools.
+
+1. Install JVM with Homebrew
+```shell
+$ brew cask install java
+```
+1. Install SDKMAN!
+```shell
+$ curl -s https://get.sdkman.io | bash
+```
+1. Install gradle
+```shell
+$ sdk install gradle 3.1
+```
+
+### Once gradle is installed
+
+* Compile souce code with gradle
+```shell
+$ gradle command commeth
+```
 * Copy and extract totpauth-parent/totpauth-impl/target/totpauth-impl-0.5.1-bin.zip
 
 Directory structure:
