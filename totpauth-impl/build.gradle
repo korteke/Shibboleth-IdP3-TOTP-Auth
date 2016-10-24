@@ -1,0 +1,36 @@
+
+description = 'totpauth-impl'
+dependencies {
+  compile project(':totpauth-api')
+    compile group: 'net.shibboleth.idp', name: 'idp-attribute-api', version:'3.2.0'
+    compile group: 'net.shibboleth.idp', name: 'idp-authn-api', version:'3.2.0'
+    compile group: 'net.shibboleth.idp', name: 'idp-attribute-resolver-api', version:'3.2.0'
+    compile group: 'net.shibboleth.idp', name: 'idp-attribute-resolver-spring', version:'3.2.0'
+    compile group: 'net.shibboleth.idp', name: 'idp-session-api', version:'3.2.0'
+    compile group: 'net.shibboleth.idp', name: 'idp-profile-api', version:'3.2.0'
+    compile group: 'org.opensaml', name: 'opensaml-core', version:'3.2.0'
+    compile group: 'org.opensaml', name: 'opensaml-profile-api', version:'3.2.0'
+    compile group: 'org.opensaml', name: 'opensaml-soap-api', version:'3.2.0'
+    compile group: 'com.google.code.gson', name: 'gson', version:'2.3.1'
+    compile group: 'com.warrenstrange', name: 'googleauth', version:'0.5.0'
+    compile group: 'org.springframework.ldap', name: 'spring-ldap-core', version:'2.0.4.RELEASE'
+    compile group: 'org.springframework.data', name: 'spring-data-mongodb', version:'1.8.1.RELEASE'
+    testCompile group: 'junit', name: 'junit', version:'3.8.1'
+    testCompile group: 'net.shibboleth.idp', name: 'idp-attribute-resolver-impl', version:'3.2.0'
+    testCompile group: 'net.shibboleth.idp', name: 'idp-attribute-resolver-spring', version:'3.2.0'
+    testCompile group: 'net.shibboleth.idp', name: 'idp-saml-impl', version:'3.2.0'
+    testCompile group: 'net.shibboleth.idp', name: 'idp-core', version:'3.2.0'
+    testCompile group: 'org.opensaml', name: 'opensaml-core', version:'3.2.0'
+    testCompile group: 'org.opensaml', name: 'opensaml-profile-api', version:'3.2.0'
+    testCompile group: 'org.opensaml', name: 'opensaml-security-impl', version:'3.2.0'
+    testCompile group: 'net.shibboleth.idp', name: 'idp-profile-api', version:'3.2.0'
+    testCompile group: 'net.shibboleth.idp', name: 'idp-authn-api', version:'3.2.0'
+    testCompile group: 'net.shibboleth.idp', name: 'idp-authn-impl', version:'3.2.0'
+    testCompile group: 'net.shibboleth.idp', name: 'idp-authn-impl', version:'3.2.0'
+}
+
+task packageTests(type: Jar) {
+  from sourceSets.test.output
+  classifier = 'tests'
+}
+artifacts.archives packageTests
