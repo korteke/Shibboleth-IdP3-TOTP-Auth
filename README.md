@@ -2,25 +2,31 @@
 [![Build Status](https://travis-ci.org/korteke/Shibboleth-IdP3-TOTP-Auth.svg?branch=master)](https://travis-ci.org/korteke/Shibboleth-IdP3-TOTP-Auth)
 
 # Shibboleth-IdP3-TOTP-Auth
-> Working example of the TOTP authenticator. Work in progress! Refactoring needed! Localization needed.  
+> Working example of the TOTP authenticator. Work in progress! Refactoring
+> needed! Localization needed.
 
-Google authenticator authentication module for Shibboleth IdP v3.  
-Works conjunction with the User/Password flow. This module first calls authn/Password flow and after that flow is completed it asks token code from the user. User can also register a new token with this module.  
+Google authenticator authentication module for Shibboleth IdP v3.
+Works conjunction with the User/Password flow. This module first calls
+authn/Password flow and after that flow is completed it asks token code from the
+user. User can also register a new token with this module.
 
-Uses External LDAP, MongoDB(EXPERIMENTAL!) or Static for seed fetching.  
+Uses External LDAP, MongoDB(EXPERIMENTAL!) or Static for seed fetching.
 
 Working example with Vagrant https://github.com/korteke/shibboleth-vagrant
 
 Requirements
 ------------
 
-Shibboleth IdP v3.2.x  
+Shibboleth IdP v3.2.x
 Java 8
 
 Installing
 ----------
 
-* Compile souce code with gradle - ```gradle command commeth```
+* Compile souce code with gradle -
+    ```
+        gradle command commeth
+    ```
 * Copy and extract totpauth-parent/totpauth-impl/target/totpauth-impl-0.5.1-bin.zip
 
 Directory structure:
@@ -36,12 +42,12 @@ Directory structure:
 └── views
 </pre>
 
-* Copy conf --> $IDP-HOME/conf  
-* Copy edit-webapp  --> $IDP-HOME/edit-webapp  
-* Copy flows  --> $IDP-HOME/flows  
-* Copy views  --> $IDP-HOME/views  
+* Copy conf --> $IDP-HOME/conf
+* Copy edit-webapp  --> $IDP-HOME/edit-webapp
+* Copy flows  --> $IDP-HOME/flows
+* Copy views  --> $IDP-HOME/views
 
-Modify $IDP_HOME/conf/idp.properties  
+Modify $IDP_HOME/conf/idp.properties
 
 idp.authn.flows = Password --> idp.authn.flows = Password|Totp
 
@@ -73,34 +79,34 @@ Seed Fetching
 From LDAP, MongoDB, SQL, File, REST, Dummy(static)
 
 ### From LDAP - External LDAP (IDM?)
-With default settings this plugin fetches token seeds from the attribute called "carLicense" which is multivalued (user can have multiple tokens).  
-You can change the source attribute by editing bean "shibboleth.authn.seedAttribute" which is defined at totp-authn-config.xml.    
-    
-This plugin also assumes that your users unique userID is "uid" attribute.    
-This can be changed by editing bean "shibboleth.authn.userAttribute" at totp-authn-config.xml.  
+With default settings this plugin fetches token seeds from the attribute called "carLicense" which is multivalued (user can have multiple tokens).
+You can change the source attribute by editing bean "shibboleth.authn.seedAttribute" which is defined at totp-authn-config.xml.
 
-* Modify LDAP properties - totp-authn-beans.xml (url, userDn, password, base)  
-* Make sure that bean id "shibboleth.totp.seedfetcher" is pointing to "net.kvak.shibboleth.totpauth.authn.impl.seed.LdapSeedFetcher"  
+This plugin also assumes that your users unique userID is "uid" attribute.
+This can be changed by editing bean "shibboleth.authn.userAttribute" at totp-authn-config.xml.
+
+* Modify LDAP properties - totp-authn-beans.xml (url, userDn, password, base)
+* Make sure that bean id "shibboleth.totp.seedfetcher" is pointing to "net.kvak.shibboleth.totpauth.authn.impl.seed.LdapSeedFetcher"
 
 ### From MongoDB - Experimental, just testing, but it works
 
-* Modify MongoDB properties - totp-authn-config.xml (mongoDbUrl, mongoDbName)  
-* Make sure that bean id "shibboleth.totp.seedfetcher" is pointing to "net.kvak.shibboleth.totpauth.authn.impl.seed.MongoSeedFetcher"  
+* Modify MongoDB properties - totp-authn-config.xml (mongoDbUrl, mongoDbName)
+* Make sure that bean id "shibboleth.totp.seedfetcher" is pointing to "net.kvak.shibboleth.totpauth.authn.impl.seed.MongoSeedFetcher"
 
 ### From Dummy - Static code
 
 * Make sure that bean id "shibboleth.totp.seedfetcher" is pointing to "net.kvak.shibboleth.totpauth.authn.impl.seed.DummySeedFetcher"
-* Register this token to your mobile device:  
+* Register this token to your mobile device:
 ![alt tag](https://raw.githubusercontent.com/korteke/Shibboleth-IdP3-TOTP-Auth/master/totp_code_qr.png)
 
 Adding new seed to user
 ----------------------
 
-~~At the moment you need to add your token codes to the repository with external process. I will create some kind of registeration flow to the IdP.~~   
-TOTP login page has a button called "Register a new token" which triggers a new flow where users can register their tokens. ATM the button is visible to all users. Next version you can choose if the users can register new tokens.  
+~~At the moment you need to add your token codes to the repository with external process. I will create some kind of registeration flow to the IdP.~~ 
+TOTP login page has a button called "Register a new token" which triggers a new flow where users can register their tokens. ATM the button is visible to all users. Next version you can choose if the users can register new tokens.
 
 This works at the moment only with the LDAP seedFetcher.
-MongoDB registeration flow is probably coming soon.  
+MongoDB registeration flow is probably coming soon.
 
 
 Requesting new Authentication Context Class with Shibboleth SP
@@ -110,11 +116,11 @@ Requesting new Authentication Context Class with Shibboleth SP
 Add new Session Initiator
 
 ```
-<SessionInitiator type="Chaining" Location="/totp" id="totp" entityID="https://IDP-ENTITY-ID">  
-  <SessionInitiator type="SAML2" acsIndex="1" template="bindingTemplate.html" authnContextClassRef="urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken"/>  
-</SessionInitiator>  
+<SessionInitiator type="Chaining" Location="/totp" id="totp" entityID="https://IDP-ENTITY-ID">
+  <SessionInitiator type="SAML2" acsIndex="1" template="bindingTemplate.html" authnContextClassRef="urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken"/>
+</SessionInitiator>
 ```
 
-After the new SessionInitiator is registered you can call your SP with https://YOUR_SP_ADDRESS/Shibboleth.sso/totp  
-That creates SAML 2.0 Authn Request where SP wants authnContextClassRef == urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken  
+After the new SessionInitiator is registered you can call your SP with https://YOUR_SP_ADDRESS/Shibboleth.sso/totp
+That creates SAML 2.0 Authn Request where SP wants authnContextClassRef == urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken
 So when the IdP receives that request it passes the request to the authn/Totp authentication flow (this module)
