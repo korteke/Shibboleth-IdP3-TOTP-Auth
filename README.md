@@ -22,7 +22,7 @@ Java 8
 
 * Compile souce code with gradle
 ```shell
-$ ./gradlew build
+$ ./gradlew packageArchive
 ```
 * Copy and extract ./totpauth-impl/build/distributions/totpauth-impl-0.5.1.zip
 
