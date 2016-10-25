@@ -1,0 +1,6 @@
+rootProject.name = 'totpauth-parent'
+include ':totpauth-api'
+include ':totpauth-impl'
+
+project(':totpauth-api').projectDir = "$rootDir/totpauth-api" as File
+project(':totpauth-impl').projectDir = "$rootDir/totpauth-impl" as File
