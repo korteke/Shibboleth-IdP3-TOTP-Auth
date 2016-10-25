@@ -45,7 +45,7 @@ task copyDeps(type: Copy) {
   into 'build/libs'
 }
 
-task copyResources(type: Copy, dependsOn: 'copyDeps' ) {
+task copyResources(type: Copy, dependsOn: compileJava) {
     from 'src/main/resources'
     into 'build/zip'
 }
@@ -57,13 +57,13 @@ task copyLibs(type: Copy, dependsOn: 'copyResources') {
     into 'build/zip/WEB-INF/lib'
 }
 
-task zipit(type: Zip, dependsOn: 'copyLibs') {
+task packageArchive(type: Zip, dependsOn: 'copyLibs') {
     baseName 'totpauth-impl'
     from ('build/zip')
     include '**/*'
 }
 
-compileJava.dependsOn zipit
+compileJava.dependsOn copyDeps
 
 task packageTests(type: Jar) {
   from sourceSets.test.output
