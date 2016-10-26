@@ -45,7 +45,7 @@ task copyDeps(type: Copy) {
   into 'build/libs'
 }
 
-task copyResources(type: Copy, dependsOn: compileJava) {
+task copyResources(type: Copy, dependsOn: 'jar') {
     from 'src/main/resources'
     into 'build/zip'
 }
