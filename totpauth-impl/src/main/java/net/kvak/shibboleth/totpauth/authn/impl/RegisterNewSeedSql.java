@@ -108,19 +108,19 @@ public class RegisterNewSeedSql extends AbstractProfileAction {
 	public RegisterNewSeedSql() {
 	}
 
-	public void setSeedDBTableName(@Nonnull @NotEmpty final String fieldName) {
+	public void setseedDBTableName(@Nonnull @NotEmpty final String fieldName) {
 		log.debug("{} {} is the seed table name", getLogPrefix(), fieldName);
 		ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 		seedDbTableName = fieldName;
 	}
 
-	public void setUsernameColumnName(@Nonnull @NotEmpty final String fieldName) {
+	public void setusernameColumnName(@Nonnull @NotEmpty final String fieldName) {
 		log.debug("{} {} is the username column name", getLogPrefix(), fieldName);
 		ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 		usernameColumnName = fieldName;
 	}
 
-	public void setSeedColumnName(@Nonnull @NotEmpty final String fieldName) {
+	public void setseedColumnName(@Nonnull @NotEmpty final String fieldName) {
 		log.debug("{} {} is the seed column name", getLogPrefix(), fieldName);
 		ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 		seedColumnName = fieldName;
