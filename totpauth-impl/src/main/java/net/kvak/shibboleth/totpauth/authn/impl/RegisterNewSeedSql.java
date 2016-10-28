@@ -105,25 +105,11 @@ public class RegisterNewSeedSql extends AbstractProfileAction {
 	/**
 	 * Constructor Initialize user and seed attributes
 	 */
-	public RegisterNewSeedSql() {
-	}
-
-	public void setseedDBTableName(@Nonnull @NotEmpty final String fieldName) {
-		log.debug("{} {} is the seed table name", getLogPrefix(), fieldName);
-		ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-		seedDbTableName = fieldName;
-	}
-
-	public void setusernameColumnName(@Nonnull @NotEmpty final String fieldName) {
-		log.debug("{} {} is the username column name", getLogPrefix(), fieldName);
-		ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-		usernameColumnName = fieldName;
-	}
-
-	public void setseedColumnName(@Nonnull @NotEmpty final String fieldName) {
-		log.debug("{} {} is the seed column name", getLogPrefix(), fieldName);
-		ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-		seedColumnName = fieldName;
+	public RegisterNewSeedSql(String seedDbTableName, String usernameColumnName, String seedColumnName) {
+		log.debug("Construct RegisterNewSeedSql with {} - {} - {}", seedDbTableName, usernameColumnName, seedColumnName);
+		this.seedDbTableName = seedDbTableName;
+		this.usernameColumnName = usernameColumnName;
+		this.seedColumnName = seedColumnName;
 	}
 
 	public void settokenCodeField(@Nonnull @NotEmpty final String fieldName) {
@@ -192,9 +178,9 @@ public class RegisterNewSeedSql extends AbstractProfileAction {
 
 		/** Make sure there isn't already a seed for this user **/
 
-		String existingSeed = this.jdbcTemplate.queryForObject(
+		String existingSeed = jdbcTemplate.queryForObject(
         	"select ? from ? where ? = ?",
-        	new Object[]{usernameColumnName, seedDbTableName, usernameColumnName, username},
+        	new Object[] { seedColumnName, seedDbTableName, usernameColumnName, username },
         	String.class);
 
 		if (!Strings.isNullOrEmpty(existingSeed)) {
@@ -203,7 +189,7 @@ public class RegisterNewSeedSql extends AbstractProfileAction {
 		}
 
 		try {
-			this.jdbcTemplate.update(
+			jdbcTemplate.update(
         		"insert into ? (?, ?) values (?, ?)",
         		seedDbTableName, usernameColumnName, seedColumnName,
         		username, sharedSecret);
