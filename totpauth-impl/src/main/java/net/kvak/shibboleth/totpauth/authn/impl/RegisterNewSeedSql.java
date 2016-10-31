@@ -60,6 +60,8 @@ public class RegisterNewSeedSql extends AbstractProfileAction {
 	private GoogleAuthenticator gAuth;
 
 	/** JdbcTemplate **/
+	@Nonnull
+	@NotEmpty
 	private JdbcTemplate jdbcTemplate;
 
 	/** TokenCodeField that is on RegisterToken form **/
@@ -93,8 +95,8 @@ public class RegisterNewSeedSql extends AbstractProfileAction {
 	private TokenUserContext tokenCtx;
 
 	/** Inject seedDataSource */
-	public void setSeedDataSource(DataSource seedDataSource) {
-		this.jdbcTemplate = new JdbcTemplate(seedDataSource);
+	public void setjdbcTemplate(@Nonnull @NotEmpty final JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	/** Inject token authenticator */
@@ -178,9 +180,10 @@ public class RegisterNewSeedSql extends AbstractProfileAction {
 
 		/** Make sure there isn't already a seed for this user **/
 
+		String querysql = "SELECT " + seedColumnName + " FROM " + seedDbTableName + " WHERE " + usernameColumnName + " = ?";
 		String existingSeed = jdbcTemplate.queryForObject(
-        	"select ? from ? where ? = ?",
-        	new Object[] { seedColumnName, seedDbTableName, usernameColumnName, username },
+        	querysql,
+        	new Object[] { username },
         	String.class);
 
 		if (!Strings.isNullOrEmpty(existingSeed)) {
@@ -189,9 +192,9 @@ public class RegisterNewSeedSql extends AbstractProfileAction {
 		}
 
 		try {
+			String insertsql = "INSERT INTO " + seedDbTableName + " (" + usernameColumnName + ", " + seedColumnName + ") VALUES (?, ?)";
 			jdbcTemplate.update(
-        		"insert into ? (?, ?) values (?, ?)",
-        		seedDbTableName, usernameColumnName, seedColumnName,
+        		insertsql,
         		username, sharedSecret);
 			return true;
 		} catch (Exception e) {
