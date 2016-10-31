@@ -47,7 +47,7 @@ public class SQLSeedFetcher implements SeedFetcher {
 	}
 
 	public SQLSeedFetcher(String seedDbTableName, String usernameColumnName, String seedColumnName) {
-		log.debug("Construct RegisterNewSeedSql with {} - {} - {}", seedDbTableName, usernameColumnName, seedColumnName);
+		log.debug("Construct SQLSeedFetcher with {} - {} - {}", seedDbTableName, usernameColumnName, seedColumnName);
 		this.seedDbTableName = seedDbTableName;
 		this.usernameColumnName = usernameColumnName;
 		this.seedColumnName = seedColumnName;
