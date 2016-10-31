@@ -78,6 +78,12 @@
     <property name="password" value=""/>
   </bean>
 
+  <!-- For SQLSeedFetcher -->
+  <bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.SQLSeedFetcher">
+      <constructor-arg ref="shibboleth.authn.seedDBTableName" />
+      <constructor-arg ref="shibboleth.authn.usernameColumnName" />
+      <constructor-arg ref="shibboleth.authn.seedColumnName" />
+  </bean>
 
 	<!-- For MongoDB -->
 	<!--bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.MongoSeedFetcher"/-->
@@ -89,7 +95,6 @@
 	-->
 
 	<!-- For Dummy -->
-	<bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.DummySeedFetcher" />
-
+	<!--<bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.DummySeedFetcher" /-->
 
 </beans>
