@@ -80,7 +80,7 @@
 
   <!-- For SQLSeedFetcher -->
   <bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.SQLSeedFetcher"
-      p:jdbcTemplate-ref="jdbcTemplate"
+      p:jdbcTemplate-ref="jdbcTemplate">
       <constructor-arg ref="shibboleth.authn.seedDBTableName" />
       <constructor-arg ref="shibboleth.authn.usernameColumnName" />
       <constructor-arg ref="shibboleth.authn.seedColumnName" />
