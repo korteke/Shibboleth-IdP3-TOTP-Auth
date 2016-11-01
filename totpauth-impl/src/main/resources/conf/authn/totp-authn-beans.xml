@@ -27,6 +27,11 @@
       p:gAuth-ref="shibboleth.totp.gAuth">
   </bean>
 
+ <bean id="CheckForSeed" class="net.kvak.shibboleth.totpauth.authn.impl.CheckForSeed" scope="prototype"
+      p:httpServletRequest-ref="shibboleth.HttpServletRequest"
+      p:seedFetcher-ref="shibboleth.totp.seedfetcher">
+  </bean>
+
   <!-- For LDAP -->
   <!--
   <bean id="RegisterNewToken" class="net.kvak.shibboleth.totpauth.authn.impl.RegisterNewToken" scope="prototype"
