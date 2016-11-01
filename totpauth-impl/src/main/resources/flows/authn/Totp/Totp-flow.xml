@@ -6,7 +6,7 @@
 	<!-- First call UserName & Password flow -->
 	<subflow-state id="CallPasswordFlow" subflow="authn/Password">
 		<input name="calledAsSubflow" value="true" />
-		<transition on="proceed" to="DisplayTotpForm" />
+		<transition on="proceed" to="CheckForSeed" />
 	</subflow-state>
 
 	<!-- Display Token form -->
@@ -47,6 +47,14 @@
 		<transition on="proceed" to="RegisterNewToken" />
 
 	</view-state>
+
+	<action-state id="CheckForSeed">
+		<evaluate expression="CheckForSeed" />
+		<evaluate expression="'proceed'" />
+
+		<transition on="InvalidCredentials" to="GenerateTokenSecrets" />
+		<transition on="proceed" to="DisplayTotpForm" />
+	</action-state>
 
 	<action-state id="ExtractTotpFromForm">
 		<evaluate expression="ExtractTotpFromForm" />

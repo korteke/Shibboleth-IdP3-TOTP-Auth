@@ -1,7 +1,6 @@
 #set ($rpContext = $profileRequestContext.getSubcontext('net.shibboleth.idp.profile.context.RelyingPartyContext'))
 #set ($userName = $authenticationContext.getSubcontext('net.shibboleth.idp.authn.context.UsernamePasswordContext', true).getUsername())
 #set ($errorMessage = $authenticationContext.getSubcontext('net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext').getErrorMessage())
-#set ($state = $authenticationContext.getSubcontext('net.kvak.shibboleth.totpauth.api.authn.context.TokenUserContext', true).getState())
 ##
 <!DOCTYPE html>
 <html>
@@ -43,9 +42,7 @@ p.error {
               <button class="form-element form-button" type="submit" name="_eventId_proceed"
               onClick="this.childNodes[0].nodeValue='#springMessageText("idp.login.pleasewait", "Logging in, please wait...")'"
               >#springMessageText("idp.login.login", "Login")</button>
-              #if ( "$state" == "REGISTER" )
-                  <br><br><button type="submit" name="registerToken" formaction="$flowExecutionUrl&_eventId=GenerateTokenSecrets">Register a new Token</button>
-              #end
+              <input type="hidden" name="state" value="$state" />
             </div>
           </form>
         </div>
