@@ -181,10 +181,16 @@ public class RegisterNewSeedSql extends AbstractProfileAction {
 		/** Make sure there isn't already a seed for this user **/
 
 		String querysql = "SELECT " + seedColumnName + " FROM " + seedDbTableName + " WHERE " + usernameColumnName + " = ?";
-		String existingSeed = jdbcTemplate.queryForObject(
-        	querysql,
-        	new Object[] { username },
-        	String.class);
+		String existingSeed = null;
+		try {
+			existingSeed = jdbcTemplate.queryForObject(
+        		querysql,
+        		new Object[] { username },
+        		String.class);
+		} catch (Exception e) {
+			log.debug("existing seed not found");
+			existingSeed = null;
+		}
 
 		if (!Strings.isNullOrEmpty(existingSeed)) {
 			log.debug("{} found existing seed. Aborting register new seed", getLogPrefix());
