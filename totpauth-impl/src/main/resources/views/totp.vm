@@ -45,7 +45,7 @@ p.error {
               >#springMessageText("idp.login.login", "Login")</button>
               <input type="hidden" name="state" value="$state" />
               #if ( "$state" == "REGISTER" )
-                  <br><br><button type="submit" name="registerToken" formaction="$flowExecutionUrl&_eventId=GenerateTokenSecrets">Register a new Token</button>
+                  <br><br><button type="submit" name="registerToken" formaction="$flowExecutionUrl&_eventId=RegisterToken">Register a new Token</button>
               #end
             </div>
           </form>
