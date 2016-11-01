@@ -37,7 +37,7 @@ public class CheckForSeed extends AbstractProfileAction {
 	private SeedFetcher seedFetcher;
 
 	/** Inject token authenticator **/
-	public void setSeedFetcher(@Nonnull @NotEmpty final SeedFetcher seedFetcher) {
+	public void setseedFetcher(@Nonnull @NotEmpty final SeedFetcher seedFetcher) {
 		this.seedFetcher = seedFetcher;
 	}
 
