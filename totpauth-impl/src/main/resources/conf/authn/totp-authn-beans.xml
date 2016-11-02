@@ -24,7 +24,8 @@
 
   <bean id="GenerateNewToken" class="net.kvak.shibboleth.totpauth.authn.impl.GenerateNewToken" scope="prototype"
       p:httpServletRequest-ref="shibboleth.HttpServletRequest"
-      p:gAuth-ref="shibboleth.totp.gAuth">
+      p:gAuth-ref="shibboleth.totp.gAuth"
+      p:gAuthIssuerName-ref="shibboleth.totp.gAuth.issuerName">
   </bean>
 
  <bean id="CheckForSeed" class="net.kvak.shibboleth.totpauth.authn.impl.CheckForSeed" scope="prototype"
