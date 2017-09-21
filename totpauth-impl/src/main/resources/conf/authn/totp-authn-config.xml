@@ -11,6 +11,10 @@
 	<!-- Names of form fields to pull tokenNumber -->
 	<bean id="shibboleth.authn.tokenCodeField" class="java.lang.String" c:_0="j_tokenNumber" />
 
+	<!-- TOTP Seed DB related fields -->
+	<bean id="shibboleth.authn.seedDBTableName" class="java.lang.String" c:_0="dbtablename"/>
+	<bean id="shibboleth.authn.usernameColumnName" class="java.lang.String" c:_0="email"/>
+	<bean id="shibboleth.authn.seedColumnName" class="java.lang.String" c:_0="totpseed"/>
 	<!-- LDAP related fields -->
 	<bean id="shibboleth.authn.seedAttribute" class="java.lang.String" c:_0="carLicense" />
 	<bean id="shibboleth.authn.userAttribute" class="java.lang.String" c:_0="uid" />
@@ -19,8 +23,10 @@
 	<bean id="shibboleth.authn.mongoDbName" class="java.lang.String" c:_0="tokenSeed" />
 	<bean id="shibboleth.authn.mongoDbUrl" class="java.lang.String" c:_0="127.0.0.1" />
 
+
 	<!-- GoogleAuthenticator class to be injected to the TOTP validator. Default settings (offset 3 codes and so on) -->
 	<bean id="shibboleth.totp.gAuth" class="com.warrenstrange.googleauth.GoogleAuthenticator" />
+	<bean id="shibboleth.totp.gAuth.issuerName" class="java.lang.String" c:_0="TOTP" />
 
     <!-- GoogleAuthenticator configuration class
     <bean id="shibboleth.totp.gAuth.conf" class="com.warrenstrange.googleauth.GoogleAuthenticatorConfigBuilder"/>
