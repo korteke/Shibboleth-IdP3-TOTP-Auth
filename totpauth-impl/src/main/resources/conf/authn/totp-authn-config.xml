@@ -13,7 +13,12 @@
 
 	<!-- LDAP related fields -->
 	<bean id="shibboleth.authn.seedAttribute" class="java.lang.String" c:_0="carLicense" />
+	<bean id="shibboleth.authn.phoneAttribute" class="java.lang.String" c:_0="mobile" />
 	<bean id="shibboleth.authn.userAttribute" class="java.lang.String" c:_0="uid" />
+
+	<!-- SMS related fields -->
+	<bean id="shibboleth.authn.smsGatewayUser" class="java.lang.String" c:_0="user" />
+	<bean id="shibboleth.authn.smsGatewayPassword" class="java.lang.String" c:_0="password" />
 
 	<!-- MongoDB related fields -->
 	<bean id="shibboleth.authn.mongoDbName" class="java.lang.String" c:_0="tokenSeed" />

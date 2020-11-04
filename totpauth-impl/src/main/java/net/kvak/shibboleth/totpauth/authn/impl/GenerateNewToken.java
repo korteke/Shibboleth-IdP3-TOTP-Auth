@@ -29,6 +29,13 @@ public class GenerateNewToken extends AbstractProfileAction {
 	
 	UsernamePasswordContext upCtx;
 	
+	private String issuer;
+	
+        public void setIssuer(String issuer) {
+                this.issuer = issuer;
+        }
+	
+	
 	/** Google Authenticator **/
 	@Nonnull
 	@NotEmpty
@@ -81,7 +88,7 @@ public class GenerateNewToken extends AbstractProfileAction {
 		try {
 			final GoogleAuthenticatorKey key = gAuth.createCredentials();
 			
-			String totpUrl = GoogleAuthenticatorQRGenerator.getOtpAuthURL("TOTP", upCtx.getUsername(), key);
+			String totpUrl = GoogleAuthenticatorQRGenerator.getOtpAuthURL(issuer, upCtx.getUsername(), key);
 			log.debug("Totp URL for {} is {}", upCtx.getUsername(), totpUrl);
 			tokenCtx.setTotpUrl(totpUrl);
 

@@ -99,9 +99,15 @@ public class RegisterNewToken extends AbstractProfileAction {
 		this.gAuth = gAuth;
 	}
 
-	/** Constructor 
-	 * Initialize user and seed attributes
-	 * */
+        private DistinguishedName path;
+
+        public void setBaseDn(String baseDn) {
+                this.path = new DistinguishedName(baseDn);
+        }
+
+	/**
+	 * Constructor Initialize user and seed attributes
+	 */
 	public RegisterNewToken(String seedAttribute, String userAttribute) {
 		log.debug("Construct RegisterNewToken with {} - {}", seedAttribute, userAttribute);
 		this.userAttribute = userAttribute;
@@ -149,7 +155,7 @@ public class RegisterNewToken extends AbstractProfileAction {
 		if (!StringUtils.isNumeric(token) || Strings.isNullOrEmpty(token)) {
 			log.debug("{} Empty or invalid tokenCode", getLogPrefix());
 			tokenCtx.setState(AuthState.CANT_VALIDATE);
-			
+
 			ActionSupport.buildEvent(profileRequestContext, AuthnEventIds.INVALID_CREDENTIALS);
 			return;
 
@@ -162,23 +168,24 @@ public class RegisterNewToken extends AbstractProfileAction {
 				if (!Strings.isNullOrEmpty(dn)) {
 					log.debug("{} User {} DN is {}", getLogPrefix(), upCtx.getUsername(), dn);
 					boolean result = registerToken(dn, tokenCtx.getSharedSecret());
-					
+
 					if (!result) {
 						ActionSupport.buildEvent(profileRequestContext, AuthnEventIds.ACCOUNT_ERROR);
 					}
+				} else {
+					log.debug("Invalid token. Returning.");
+					tokenCtx.setState(AuthState.CANT_VALIDATE);
+					ActionSupport.buildEvent(profileRequestContext, AuthnEventIds.INVALID_CREDENTIALS);
 				}
-
 			}
-			log.debug("Invalid token. Returning.");
-			tokenCtx.setState(AuthState.CANT_VALIDATE);
-			ActionSupport.buildEvent(profileRequestContext, AuthnEventIds.INVALID_CREDENTIALS);
+
 		}
 	}
 
 	private boolean registerToken(String dn, String sharedSecret) {
 
 		log.debug("Entering registerToken");
-		
+
 		try {
 			Attribute attr = new BasicAttribute(seedAttribute, sharedSecret);
 			log.debug("Created new BasicAttribute [{} - {}]", attr.getID(), attr.get(0));
@@ -200,7 +207,7 @@ public class RegisterNewToken extends AbstractProfileAction {
 		EqualsFilter f = new EqualsFilter(userAttribute, username);
 		log.debug("{} Trying to find user {} dn from ldap with filter {}", getLogPrefix(), username, f.encode());
 
-		List result = ldapTemplate.search(DistinguishedName.EMPTY_PATH, f.toString(), new AbstractContextMapper() {
+		List result = ldapTemplate.search(path, f.toString(), new AbstractContextMapper() {
 			protected Object doMapFromContext(DirContextOperations ctx) {
 				return ctx.getDn().toString();
 			}

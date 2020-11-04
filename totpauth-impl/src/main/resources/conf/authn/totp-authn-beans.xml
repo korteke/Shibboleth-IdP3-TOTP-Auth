@@ -23,15 +23,17 @@
 		p:httpServletRequest-ref="shibboleth.HttpServletRequest" p:seedFetcher-ref="shibboleth.totp.seedfetcher" p:gAuth-ref="shibboleth.totp.gAuth" />
         
     <bean id="RegisterNewToken" class="net.kvak.shibboleth.totpauth.authn.impl.RegisterNewToken" scope="prototype"
-        p:httpServletRequest-ref="shibboleth.HttpServletRequest" p:gAuth-ref="shibboleth.totp.gAuth" />
-        
-    <bean id="GenerateNewToken" class="net.kvak.shibboleth.totpauth.authn.impl.GenerateNewToken" scope="prototype"
-        p:httpServletRequest-ref="shibboleth.HttpServletRequest" 
-        p:gAuth-ref="shibboleth.totp.gAuth" 
-        p:ldapTemplate-ref="ldapTemplate" 
+        p:httpServletRequest-ref="shibboleth.HttpServletRequest"
+        p:gAuth-ref="shibboleth.totp.gAuth"
+        p:ldapTemplate-ref="ldapTemplate"
         p:tokenCodeField-ref="shibboleth.authn.tokenCodeField">
         <constructor-arg ref="shibboleth.authn.seedAttribute" />
-		<constructor-arg ref="shibboleth.authn.userAttribute" />
+        <constructor-arg ref="shibboleth.authn.userAttribute" />
+    </bean>
+
+    <bean id="GenerateNewToken" class="net.kvak.shibboleth.totpauth.authn.impl.GenerateNewToken" scope="prototype"
+        p:httpServletRequest-ref="shibboleth.HttpServletRequest"
+        p:gAuth-ref="shibboleth.totp.gAuth">
     </bean>
 
 	<bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
@@ -49,18 +51,24 @@
 	<bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.LdapSeedFetcher">
 		<constructor-arg ref="shibboleth.authn.seedAttribute" />
 		<constructor-arg ref="shibboleth.authn.userAttribute" />
+		<constructor-arg ref="shibboleth.authn.phoneAttribute" />
+		<constructor-arg ref="shibboleth.authn.smsGatewayUser" />
+		<constructor-arg ref="shibboleth.authn.smsGatewayPassword" />
 		<property name="ldapTemplate" ref="ldapTemplate" />
+                <property name="baseDn" value="%{idp.authn.LDAP.baseDN}" />
 	</bean>
 
 	<!-- For MongoDB -->
 	<!--bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.MongoSeedFetcher"/-->
-	
-	<!-- For Dummy -->
-	<!--bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.DummySeedFetcher"/-->
-	
+	<!-- 
 	<bean id="shibboleth.totp.mongoConfig" class="net.kvak.shibboleth.totpauth.authn.impl.seed.MongoDB.SpringMongoConfiguration">
 		<constructor-arg ref="shibboleth.authn.mongoDbName" />
 		<constructor-arg ref="shibboleth.authn.mongoDbUrl" />
 	</bean>
+	-->
+	
+	<!-- For Dummy -->
+	<!--bean id="shibboleth.totp.seedfetcher" class="net.kvak.shibboleth.totpauth.authn.impl.seed.DummySeedFetcher"/-->
+	
 
 </beans>
